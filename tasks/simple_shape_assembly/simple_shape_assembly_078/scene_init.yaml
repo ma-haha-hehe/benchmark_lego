@@ -1,0 +1,62 @@
+min_distance_m: 0.03
+parts_plate:
+  center:
+  - 0.0
+  - -0.16
+  - 0.0
+  size:
+  - 0.4
+  - 0.28
+assembly_plate:
+  center:
+  - 0.0
+  - 0.16
+  - 0.0
+  size:
+  - 0.32
+  - 0.28
+blocks:
+- name: 4x2_brick_1
+  type: brick_4x2
+  color: yellow
+  pos:
+  - -0.098
+  - -0.1032
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 4.7124
+- name: 2x2_brick_2
+  type: brick_2x2
+  color: red
+  pos:
+  - 0.0431
+  - -0.0556
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 4.7124
+- name: 2x2_brick_3
+  type: brick_2x2
+  color: blue
+  pos:
+  - 0.0977
+  - -0.2038
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 0.0
+- name: 4x2_brick_4
+  type: brick_4x2
+  color: green
+  pos:
+  - -0.1129
+  - -0.252
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 3.1416

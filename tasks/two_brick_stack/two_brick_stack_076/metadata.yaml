@@ -1,0 +1,6 @@
+instance_id: two_brick_stack_076
+task_class: two_brick_stack
+seed: 75
+num_blocks: 2
+verified: true
+planner_checked: false

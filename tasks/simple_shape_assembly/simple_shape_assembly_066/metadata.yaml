@@ -1,0 +1,6 @@
+instance_id: simple_shape_assembly_066
+task_class: simple_shape_assembly
+seed: 11381
+num_blocks: 5
+verified: true
+planner_checked: false

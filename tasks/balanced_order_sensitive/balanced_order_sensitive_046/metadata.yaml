@@ -1,0 +1,6 @@
+instance_id: balanced_order_sensitive_046
+task_class: balanced_order_sensitive
+seed: 3125
+num_blocks: 4
+verified: true
+planner_checked: false

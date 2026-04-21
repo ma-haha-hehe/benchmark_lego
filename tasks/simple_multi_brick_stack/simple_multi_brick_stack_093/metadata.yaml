@@ -1,0 +1,6 @@
+instance_id: simple_multi_brick_stack_093
+task_class: simple_multi_brick_stack
+seed: 1095
+num_blocks: 3
+verified: true
+planner_checked: false
