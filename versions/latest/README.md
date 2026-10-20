@@ -9,6 +9,20 @@
 | 3 | tasks/simple_shape_assembly/ | [12 例桥接与分层检查](images/tier_3/index.html) |
 | 4 | tasks/balanced_order_sensitive/ | [12 例＋全部 100 例中心边界检查](images/tier_4/index.html) |
 
+## 直接查看示例图
+
+图片与 `tasks/` 保存在同一版本目录下。下方总览在 GitHub 上可直接显示，点击可查看原图；各任务的单独视图与对应 YAML 对照文件保存在 `images/tier_*/<实例编号>/`。
+
+| Tier 1：12 个样例 | Tier 2：12 个样例 |
+|---|---|
+| ![Tier 1 最新版样例](images/tier_1/overview.png) | ![Tier 2 最新版样例](images/tier_2/overview.png) |
+| [对应任务](tasks/two_brick_stack/) · [单独图片](images/tier_1/) | [对应任务](tasks/simple_multi_brick_stack/) · [单独图片](images/tier_2/) |
+
+| Tier 3：12 个样例 | Tier 4：12 个中心边界样例 |
+|---|---|
+| ![Tier 3 最新版样例](images/tier_3/overview.png) | ![Tier 4 最新版中心边界样例](images/tier_4/center_overview.png) |
+| [对应任务](tasks/simple_shape_assembly/) · [单独图片](images/tier_3/) | [对应任务](tasks/balanced_order_sensitive/) · [全部 100 例中心检查](images/tier_4/) |
+
 每个任务图片放在对应 Tier 下面、以完整实例 ID 命名的文件夹中。任务本体是 tasks/，图片下 source/ 是检查副本。validation/ 保存当前校验记录。
 
 在仓库根目录校验：python3 scripts/verifier.py --benchmark_root versions/latest/tasks。

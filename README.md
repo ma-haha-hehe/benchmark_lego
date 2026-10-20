@@ -4,6 +4,17 @@
 
 **实际使用最新版：`versions/latest/`。** [打开四个 Tier 的图片入口](versions/latest/images/index.html) · [新旧版本导航](versions/index.html)
 
+## 最新版示例图片
+
+下图均来自当前 `versions/latest/tasks/`，采用论文风格并标出结构参考轴、砖中心与底层边界。点击图片查看原图，点击实例编号查看对应任务。完整图片在任务目录旁的 [versions/latest/images/](versions/latest/images/)，共 497 张；每个 Tier 有 12 个精选样例，Tier 4 另包含全部 100 个任务的中心边界检查。
+
+| Tier | 示例一 | 示例二 | 更多图片 |
+|---|---|---|---|
+| **Tier 1**：2 块，同中心、固定朝向 | ![Tier 1：2 块共同中心](versions/latest/images/tier_1/two_brick_stack_001/target.png)<br>[two_brick_stack_001](versions/latest/tasks/two_brick_stack/two_brick_stack_001/) | ![Tier 1：另一组 2 块堆叠](versions/latest/images/tier_1/two_brick_stack_002/target.png)<br>[two_brick_stack_002](versions/latest/tasks/two_brick_stack/two_brick_stack_002/) | [12 例总览](versions/latest/images/tier_1/overview.png) · [全部视图](versions/latest/images/tier_1/) |
+| **Tier 2**：中心一致，仅 0°/90° | ![Tier 2：2 块直角堆叠](versions/latest/images/tier_2/simple_multi_brick_stack_001/target.png)<br>[simple_multi_brick_stack_001](versions/latest/tasks/simple_multi_brick_stack/simple_multi_brick_stack_001/) | ![Tier 2：3 块共同中心堆叠](versions/latest/images/tier_2/simple_multi_brick_stack_004/target.png)<br>[simple_multi_brick_stack_004](versions/latest/tasks/simple_multi_brick_stack/simple_multi_brick_stack_004/) | [12 例总览](versions/latest/images/tier_2/overview.png) · [全部视图](versions/latest/images/tier_2/) |
+| **Tier 3**：上层砖体在底层包络内 | ![Tier 3：3 块桥接](versions/latest/images/tier_3/simple_shape_assembly_001/target.png)<br>[simple_shape_assembly_001](versions/latest/tasks/simple_shape_assembly/simple_shape_assembly_001/) | ![Tier 3：4 块桥接](versions/latest/images/tier_3/simple_shape_assembly_002/target.png)<br>[simple_shape_assembly_002](versions/latest/tasks/simple_shape_assembly/simple_shape_assembly_002/) | [12 例总览](versions/latest/images/tier_3/overview.png) · [全部视图](versions/latest/images/tier_3/) |
+| **Tier 4**：上层砖中心在边界上或外部 | ![Tier 4：3 块中心边界检查](versions/latest/images/tier_4/balanced_order_sensitive_001/center_inspection.png)<br>[balanced_order_sensitive_001](versions/latest/tasks/balanced_order_sensitive/balanced_order_sensitive_001/) | ![Tier 4：4 块中心边界检查](versions/latest/images/tier_4/balanced_order_sensitive_002/center_inspection.png)<br>[balanced_order_sensitive_002](versions/latest/tasks/balanced_order_sensitive/balanced_order_sensitive_002/) | [12 例中心总览](versions/latest/images/tier_4/center_overview.png) · [全部 100 例检查](versions/latest/images/tier_4/) |
+
 ## 仓库结构
 
 ```text
