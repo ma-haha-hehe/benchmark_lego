@@ -1,0 +1,32 @@
+{
+  "version": "latest",
+  "task_instances": 400,
+  "task_classes": {
+    "simple_multi_brick_stack": 100,
+    "balanced_order_sensitive": 100,
+    "simple_shape_assembly": 100,
+    "two_brick_stack": 100
+  },
+  "task_yaml_files": 1200,
+  "task_path": "versions/latest/tasks",
+  "image_gallery": "versions/latest/images/index.html",
+  "image_samples": 136,
+  "image_png_files": 497,
+  "description": "Current benchmark task generation rules",
+  "featured_samples_per_tier": 12,
+  "tier_image_galleries": {
+    "1": "versions/latest/images/tier_1/index.html",
+    "2": "versions/latest/images/tier_2/index.html",
+    "3": "versions/latest/images/tier_3/index.html",
+    "4": "versions/latest/images/tier_4/index.html"
+  },
+  "image_annotation_version": "ground-envelope-axis-v1",
+  "tier_reading_guide": "versions/latest/images/tier_definitions.html",
+  "tier2_block_count_distribution": {
+    "2": 43,
+    "3": 42,
+    "4": 8,
+    "5": 7
+  },
+  "tier2_count_policy": "85_percent_2_to_3_15_percent_4_to_5"
+}

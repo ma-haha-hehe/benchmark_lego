@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-20",
+  "static_tasks_passed": 400,
+  "seed_reproductions_passed": 400,
+  "task_counts": {
+    "balanced_order_sensitive": {
+      "3": 27,
+      "4": 27,
+      "5": 26,
+      "6": 5,
+      "7": 5,
+      "8": 5,
+      "9": 2,
+      "10": 1,
+      "11": 1,
+      "12": 1
+    },
+    "simple_multi_brick_stack": {
+      "2": 43,
+      "3": 42,
+      "4": 8,
+      "5": 7
+    },
+    "simple_shape_assembly": {
+      "3": 27,
+      "4": 27,
+      "5": 26,
+      "6": 5,
+      "7": 5,
+      "8": 5,
+      "9": 2,
+      "10": 1,
+      "11": 1,
+      "12": 1
+    },
+    "two_brick_stack": {
+      "2": 100
+    }
+  },
+  "gallery_instances": 136,
+  "gallery_source_yaml_hashes_verified": 408,
+  "gallery_pngs_verified": 497,
+  "gallery_manifest_frames_verified": 492,
+  "local_html_links_verified": 1197,
+  "fresh_paper_style_pngs_rendered": 9,
+  "fresh_render_guide_and_mesh_audits_match_published_geometry": true,
+  "render_comparison": "Geometry agrees within 1e-8; raster bytes vary with rendering libraries and fonts. Existing published PNGs retained.",
+  "regression_test_methods": 35,
+  "validation_scope": "Static geometry, deterministic generation, image/source integrity and renderer smoke checks; no simulator or hardware execution.",
+  "historical_render_reports_preserved": true
+}

@@ -1,479 +1,307 @@
+"""Independent task/schema validation for generator v2's static grid model."""
 from __future__ import annotations
 
 import argparse
 import math
-import os
-from dataclasses import dataclass
-from typing import Dict, List, Tuple, Set, Optional
+import sys
+from collections import defaultdict
+from pathlib import Path
 
 import yaml
 
-
-# =========================
-# 常量
-# =========================
-
-STUD = 0.032
-BRICK_H = 0.020
-VALID_TYPES = {"brick_2x2", "brick_4x2"}
-VALID_COLORS = {"red", "blue", "yellow", "green"}
+from geometry import (Brick, BRICK_H, EPS, GENERATOR_VERSION, MIN_CLEARANCE_M,
+                      MIN_SUPPORT_RATIO, STUD, TASK_CLASSES, VALID_COLORS,
+                      TIER2_YAW_POLICY, SHAPE_POLICY, TIER4_CENTER_POLICY,
+                      VALID_TYPES, geometry_config, grasp_axis,
+                      has_external_overhang, has_upper_center_on_or_outside_ground_boundary,
+                      layer, overlap_area, rect_distance,
+                      static_disassembly_order, support_ratio, within_plate)
 
 
-# =========================
-# 数据结构
-# =========================
+class UniqueKeyLoader(yaml.SafeLoader):
+    pass
 
-@dataclass
-class Brick:
-    name: str
-    type: str
-    color: str
-    pos: List[float]
-    rotation: List[float]
 
-    def yaw_deg(self) -> int:
-        return int(round(math.degrees(self.rotation[2]))) % 180
+def _unique_mapping(loader, node, deep=False):
+    result = {}
+    for key, value in node.value:
+        name = loader.construct_object(key, deep=deep)
+        if name in result:
+            raise ValueError(f'Duplicate YAML key: {name}')
+        result[name] = loader.construct_object(value, deep=deep)
+    return result
 
-    def dims_xy(self) -> Tuple[float, float]:
-        if self.type == "brick_2x2":
-            dx, dy = 2 * STUD, 2 * STUD
-        elif self.type == "brick_4x2":
-            dx, dy = 4 * STUD, 2 * STUD
+
+UniqueKeyLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _unique_mapping)
+
+
+def load_yaml(path):
+    with open(path, encoding='utf-8') as stream:
+        value = yaml.load(stream, Loader=UniqueKeyLoader)
+    if not isinstance(value, dict):
+        raise ValueError(f'{path}: expected a YAML mapping')
+    return value
+
+
+def _number(value):
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        return False
+    try:
+        return math.isfinite(value)
+    except OverflowError:
+        return False
+
+
+def _vector(value, count):
+    return isinstance(value, list) and len(value) == count and all(_number(v) for v in value)
+
+
+def parse_bricks(blocks):
+    return [Brick(b['name'], b['type'], b['color'], list(b['pos']), list(b['rotation'])) for b in blocks]
+
+
+def _blocks_schema(value, label):
+    errors = []
+    if not isinstance(value, list) or not value:
+        return [f'{label}: blocks must be a nonempty list']
+    names = set()
+    for index, b in enumerate(value):
+        prefix = f'{label}[{index}]'
+        if not isinstance(b, dict):
+            errors.append(f'{prefix}: brick must be a mapping')
+            continue
+        name = b.get('name')
+        if not isinstance(name, str) or not name:
+            errors.append(f'{prefix}: name must be a nonempty string')
+        elif name in names:
+            errors.append(f'{prefix}: duplicate name {name}')
         else:
-            raise ValueError(f"Unknown brick type: {self.type}")
-
-        if self.yaw_deg() == 90:
-            dx, dy = dy, dx
-        return dx, dy
-
-    def bbox_xy(self) -> Tuple[float, float, float, float]:
-        dx, dy = self.dims_xy()
-        x, y = self.pos[0], self.pos[1]
-        return (x - dx / 2.0, x + dx / 2.0, y - dy / 2.0, y + dy / 2.0)
-
-
-# =========================
-# YAML 读取
-# =========================
-
-def load_yaml(path: str) -> Dict:
-    with open(path, "r", encoding="utf-8") as f:
-        data = yaml.safe_load(f)
-    if data is None:
-        raise ValueError(f"Empty yaml file: {path}")
-    return data
-
-
-def parse_bricks(blocks: List[Dict]) -> List[Brick]:
-    bricks = []
-    for b in blocks:
-        bricks.append(
-            Brick(
-                name=b["name"],
-                type=b["type"],
-                color=b["color"],
-                pos=list(b["pos"]),
-                rotation=list(b["rotation"]),
-            )
-        )
-    return bricks
-
-
-# =========================
-# 基础几何工具
-# =========================
-
-def within_plate_xy(
-    center_xy: Tuple[float, float],
-    dims_xy: Tuple[float, float],
-    plate_center: Tuple[float, float, float],
-    plate_size: Tuple[float, float],
-    margin: float = 0.0,
-) -> bool:
-    x, y = center_xy
-    dx, dy = dims_xy
-
-    min_x = plate_center[0] - plate_size[0] / 2.0 + margin
-    max_x = plate_center[0] + plate_size[0] / 2.0 - margin
-    min_y = plate_center[1] - plate_size[1] / 2.0 + margin
-    max_y = plate_center[1] + plate_size[1] / 2.0 - margin
-
-    if x - dx / 2.0 < min_x:
-        return False
-    if x + dx / 2.0 > max_x:
-        return False
-    if y - dy / 2.0 < min_y:
-        return False
-    if y + dy / 2.0 > max_y:
-        return False
-    return True
-
-
-def rect_gap_ok(
-    a_center: Tuple[float, float],
-    a_dims: Tuple[float, float],
-    b_center: Tuple[float, float],
-    b_dims: Tuple[float, float],
-    min_gap: float
-) -> bool:
-    ax, ay = a_center
-    bx, by = b_center
-    aw, ah = a_dims
-    bw, bh = b_dims
-
-    a_half_w = aw / 2.0 + min_gap / 2.0
-    a_half_h = ah / 2.0 + min_gap / 2.0
-    b_half_w = bw / 2.0 + min_gap / 2.0
-    b_half_h = bh / 2.0 + min_gap / 2.0
-
-    overlap_x = abs(ax - bx) < (a_half_w + b_half_w)
-    overlap_y = abs(ay - by) < (a_half_h + b_half_h)
-
-    return not (overlap_x and overlap_y)
-
-
-def interval_overlap_len(a1: float, a2: float, b1: float, b2: float) -> float:
-    return max(0.0, min(a2, b2) - max(a1, b1))
-
-
-def bricks_touch_or_support(a: Brick, b: Brick, eps: float = 1e-6) -> bool:
-    ax1, ax2, ay1, ay2 = a.bbox_xy()
-    bx1, bx2, by1, by2 = b.bbox_xy()
-
-    az = a.pos[2]
-    bz = b.pos[2]
-
-    overlap_x = interval_overlap_len(ax1, ax2, bx1, bx2)
-    overlap_y = interval_overlap_len(ay1, ay2, by1, by2)
-
-    # 同层 footprint 有正面积重叠
-    if abs(az - bz) < eps:
-        if overlap_x > eps and overlap_y > eps:
-            return True
-
-    # 上下层相差一个 brick height 且 footprint 有正面积重叠
-    if abs(abs(az - bz) - BRICK_H) < eps:
-        if overlap_x > eps and overlap_y > eps:
-            return True
-
-    return False
-
-
-# =========================
-# 验证函数
-# =========================
-
-def verify_blocks_basic(bricks: List[Brick]) -> List[str]:
-    errors = []
-    seen_names = set()
-
-    for i, b in enumerate(bricks):
-        if b.name in seen_names:
-            errors.append(f"Duplicate brick name: {b.name}")
-        seen_names.add(b.name)
-
-        if b.type not in VALID_TYPES:
-            errors.append(f"{b.name}: invalid type {b.type}")
-
-        if b.color not in VALID_COLORS:
-            errors.append(f"{b.name}: invalid color {b.color}")
-
-        if len(b.pos) != 3:
-            errors.append(f"{b.name}: pos must have length 3")
-
-        if len(b.rotation) != 3:
-            errors.append(f"{b.name}: rotation must have length 3")
-
+            names.add(name)
+        if not isinstance(b.get('type'), str) or b['type'] not in VALID_TYPES:
+            errors.append(f'{prefix}: invalid type')
+        if not isinstance(b.get('color'), str) or b['color'] not in VALID_COLORS:
+            errors.append(f'{prefix}: invalid color')
+        if not _vector(b.get('pos'), 3):
+            errors.append(f'{prefix}: pos must contain 3 finite numbers')
+        if not _vector(b.get('rotation'), 3):
+            errors.append(f'{prefix}: rotation must contain 3 finite numbers')
+        else:
+            roll, pitch, yaw = b['rotation']
+            if abs(roll) > EPS or abs(pitch) > EPS:
+                errors.append(f'{prefix}: roll and pitch must be zero')
+            if abs(yaw/(math.pi/2)-round(yaw/(math.pi/2))) > 5e-5:
+                errors.append(f'{prefix}: yaw must be a multiple of pi/2 radians')
     return errors
 
 
-def verify_goal_within_plate(goal_bricks: List[Brick], assembly_plate: Dict) -> List[str]:
-    errors = []
-    center = tuple(assembly_plate["center"])
-    size = tuple(assembly_plate["size"])
-
-    for b in goal_bricks:
-        if not within_plate_xy(
-            center_xy=(b.pos[0], b.pos[1]),
-            dims_xy=b.dims_xy(),
-            plate_center=center,
-            plate_size=size,
-            margin=0.0,
-        ):
-            errors.append(f"{b.name}: outside assembly plate")
-
-    return errors
-
-
-def verify_scene_within_plate(scene_bricks: List[Brick], parts_plate: Dict) -> List[str]:
-    errors = []
-    center = tuple(parts_plate["center"])
-    size = tuple(parts_plate["size"])
-
-    for b in scene_bricks:
-        if not within_plate_xy(
-            center_xy=(b.pos[0], b.pos[1]),
-            dims_xy=b.dims_xy(),
-            plate_center=center,
-            plate_size=size,
-            margin=0.0,
-        ):
-            errors.append(f"{b.name}: outside parts plate")
-
-    return errors
-
-
-def verify_scene_min_distance(scene_bricks: List[Brick], min_distance_m: float) -> List[str]:
-    errors = []
-    for i in range(len(scene_bricks)):
-        for j in range(i + 1, len(scene_bricks)):
-            bi = scene_bricks[i]
-            bj = scene_bricks[j]
-            if not rect_gap_ok(
-                (bi.pos[0], bi.pos[1]), bi.dims_xy(),
-                (bj.pos[0], bj.pos[1]), bj.dims_xy(),
-                min_distance_m,
-            ):
-                errors.append(
-                    f"Initial scene clearance violation: {bi.name} vs {bj.name}"
-                )
-    return errors
-
-
-def verify_goal_connected(goal_bricks: List[Brick]) -> List[str]:
-    if not goal_bricks:
-        return ["Goal structure is empty"]
-
-    if len(goal_bricks) == 1:
-        return []
-
-    graph: Dict[int, Set[int]] = {i: set() for i in range(len(goal_bricks))}
-    for i in range(len(goal_bricks)):
-        for j in range(i + 1, len(goal_bricks)):
-            if bricks_touch_or_support(goal_bricks[i], goal_bricks[j]):
-                graph[i].add(j)
-                graph[j].add(i)
-
-    visited = set()
-    stack = [0]
-    while stack:
-        u = stack.pop()
-        if u in visited:
-            continue
-        visited.add(u)
-        stack.extend(graph[u] - visited)
-
-    if len(visited) != len(goal_bricks):
-        return [
-            f"Goal structure is not connected: connected component size = {len(visited)}, total = {len(goal_bricks)}"
-        ]
+def _plate_schema(plate, label):
+    if not isinstance(plate, dict) or not _vector(plate.get('center'), 3) or not _vector(plate.get('size'), 2):
+        return [f'{label}: expected center[3] and size[2] with finite numbers']
+    if any(v <= 0 for v in plate['size']):
+        return [f'{label}: plate dimensions must be positive']
     return []
 
 
-def verify_name_type_color_consistency(goal_bricks: List[Brick], scene_bricks: List[Brick]) -> List[str]:
+def verify_goal_connected(bricks):
+    if not bricks:
+        return ['Goal is empty']
+    seen = {0}
+    pending = [0]
+    while pending:
+        i = pending.pop()
+        for j, b in enumerate(bricks):
+            if j not in seen and abs(abs(bricks[i].pos[2]-b.pos[2])-BRICK_H) <= EPS and overlap_area(bricks[i], b) > EPS*EPS:
+                seen.add(j)
+                pending.append(j)
+    return [] if len(seen) == len(bricks) else ['Goal is not connected by vertical stud connections']
+
+
+def verify_goal_geometry(bricks, assembly_plate, task_class):
     errors = []
-
-    goal_map = {b.name: b for b in goal_bricks}
-    scene_map = {b.name: b for b in scene_bricks}
-
-    if set(goal_map.keys()) != set(scene_map.keys()):
-        missing_in_scene = set(goal_map.keys()) - set(scene_map.keys())
-        extra_in_scene = set(scene_map.keys()) - set(goal_map.keys())
-        if missing_in_scene:
-            errors.append(f"Missing in scene_init: {sorted(missing_in_scene)}")
-        if extra_in_scene:
-            errors.append(f"Extra in scene_init: {sorted(extra_in_scene)}")
+    layers = defaultdict(list)
+    base_z = assembly_plate['center'][2]
+    ox = assembly_plate['center'][0] - assembly_plate['size'][0]/2
+    oy = assembly_plate['center'][1] - assembly_plate['size'][1]/2
+    for b in bricks:
+        if not within_plate(b, assembly_plate):
+            errors.append(f'{b.name}: outside assembly plate')
+        z = (b.pos[2]-base_z)/BRICK_H
+        if z < -EPS or abs(z-round(z)) > 1e-6:
+            errors.append(f'{b.name}: invalid/non-grid layer')
+        x1, _, y1, _ = b.bbox_xy()
+        if any(abs(v-round(v)) > 1e-6 for v in [(x1-ox)/STUD, (y1-oy)/STUD]):
+            errors.append(f'{b.name}: off stud grid')
+        layers[layer(b, base_z)].append(b)
+    if errors:
         return errors
-
-    for name in goal_map:
-        g = goal_map[name]
-        s = scene_map[name]
-        if g.type != s.type:
-            errors.append(f"{name}: type mismatch goal={g.type}, scene={s.type}")
-        if g.color != s.color:
-            errors.append(f"{name}: color mismatch goal={g.color}, scene={s.color}")
-
+    for level, group in layers.items():
+        for i, a in enumerate(group):
+            for b in group[i+1:]:
+                if overlap_area(a, b) > EPS*EPS:
+                    errors.append(f'Same-layer collision: {a.name} / {b.name}')
+    if errors:
+        return errors
+    for level, group in layers.items():
+        for b in group:
+            if level > 0:
+                ratio = support_ratio(b, layers.get(level-1, []))
+                if ratio < MIN_SUPPORT_RATIO-EPS:
+                    errors.append(f'{b.name}: support ratio {ratio:.3f} below {MIN_SUPPORT_RATIO}')
+        if not any(grasp_axis(b, group) for b in group):
+            errors.append(f'Layer {level}: no static side-strip gripper access')
+    errors.extend(verify_goal_connected(bricks))
+    if task_class not in TASK_CLASSES:
+        errors.append(f'Unknown task class: {task_class}')
+        return errors
+    n = len(bricks)
+    if task_class == 'two_brick_stack' and n != 2:
+        errors.append('Tier 1 requires exactly 2 bricks')
+    if task_class == 'simple_multi_brick_stack' and not 2 <= n <= 5:
+        errors.append('Tier 2 requires 2-5 bricks')
+    if task_class in TASK_CLASSES[2:] and not 3 <= n <= 12:
+        errors.append('Tier 3/4 require 3-12 bricks')
+    if task_class in TASK_CLASSES[:2]:
+        anchor = bricks[0]
+        if any(b.type != anchor.type for b in bricks):
+            errors.append('Stack must use a fixed brick type')
+        if task_class == 'two_brick_stack' and any(b.yaw_deg() != anchor.yaw_deg() for b in bricks):
+            errors.append('Stack must use a fixed yaw')
+        if any(abs(b.pos[j]-anchor.pos[j]) > EPS for b in bricks for j in [0, 1]):
+            errors.append('Stack must be centre-aligned')
+        if set(layers) != set(range(n)) or any(len(group) != 1 for group in layers.values()):
+            errors.append('Stack must have one brick on each consecutive layer starting at zero')
+    elif task_class == 'simple_shape_assembly':
+        if len(layers[0]) < 2:
+            errors.append('Tier 3 requires multiple ground columns')
+        if has_external_overhang(bricks, base_z):
+            errors.append('Tier 3 must remain inside the ground-layer bounding box')
+    elif not has_upper_center_on_or_outside_ground_boundary(bricks, base_z):
+        errors.append('Tier 4 requires an upper brick centre on or outside the ground-layer bounding box')
     return errors
 
 
-def verify_metadata(metadata: Dict, goal_bricks: List[Brick], task_class: str) -> List[str]:
+def verify_instance_data(final_product, scene_init, metadata, expected_id=None, expected_class=None, use_planner=False):
     errors = []
-
-    if metadata.get("task_class") != task_class:
-        errors.append(
-            f"metadata task_class mismatch: metadata={metadata.get('task_class')} expected={task_class}"
-        )
-
-    if metadata.get("num_blocks") != len(goal_bricks):
-        errors.append(
-            f"metadata num_blocks mismatch: metadata={metadata.get('num_blocks')} actual={len(goal_bricks)}"
-        )
-
-    if metadata.get("verified") is not True:
-        errors.append("metadata verified is not true")
-
-    return errors
-
-
-def planner_check_placeholder(goal_bricks: List[Brick]) -> List[str]:
-    """
-    这里预留给 Wenbo planner。
-    现在默认通过。
-    如果以后需要，可以改成返回错误列表。
-    """
-    _ = goal_bricks
-    return []
-
-
-# =========================
-# 目录级验证
-# =========================
-
-def verify_instance_dir(instance_dir: str, use_planner: bool = False) -> Tuple[bool, List[str]]:
-    errors: List[str] = []
-
-    final_product_path = os.path.join(instance_dir, "final_product.yaml")
-    scene_init_path = os.path.join(instance_dir, "scene_init.yaml")
-    metadata_path = os.path.join(instance_dir, "metadata.yaml")
-
-    for p in [final_product_path, scene_init_path, metadata_path]:
-        if not os.path.exists(p):
-            errors.append(f"Missing file: {p}")
-
+    if not all(isinstance(v, dict) for v in [final_product, scene_init, metadata]):
+        return False, ['Task files must contain mappings']
+    errors.extend(_blocks_schema(final_product.get('blocks'), 'goal'))
+    errors.extend(_blocks_schema(scene_init.get('blocks'), 'scene'))
+    for name in ['parts_plate', 'assembly_plate']:
+        errors.extend(_plate_schema(scene_init.get(name), name))
     if errors:
         return False, errors
-
-    final_product = load_yaml(final_product_path)
-    scene_init = load_yaml(scene_init_path)
-    metadata = load_yaml(metadata_path)
-
-    if "blocks" not in final_product:
-        errors.append("final_product.yaml missing 'blocks'")
-        return False, errors
-
-    if "blocks" not in scene_init:
-        errors.append("scene_init.yaml missing 'blocks'")
-        return False, errors
-
-    if "parts_plate" not in scene_init:
-        errors.append("scene_init.yaml missing 'parts_plate'")
-        return False, errors
-
-    if "assembly_plate" not in scene_init:
-        errors.append("scene_init.yaml missing 'assembly_plate'")
-        return False, errors
-
-    if "instance_id" not in metadata:
-        errors.append("metadata.yaml missing 'instance_id'")
-    if "task_class" not in metadata:
-        errors.append("metadata.yaml missing 'task_class'")
-
-    if errors:
-        return False, errors
-
-    goal_bricks = parse_bricks(final_product["blocks"])
-    scene_bricks = parse_bricks(scene_init["blocks"])
-    task_class = metadata["task_class"]
-
-    # 基础检查
-    errors.extend(verify_blocks_basic(goal_bricks))
-    errors.extend(verify_blocks_basic(scene_bricks))
-
-    # goal 检查
-    errors.extend(verify_goal_within_plate(goal_bricks, scene_init["assembly_plate"]))
-    errors.extend(verify_goal_connected(goal_bricks))
-
-    # scene 检查
-    min_distance_m = float(scene_init.get("min_distance_m", 0.0))
-    errors.extend(verify_scene_within_plate(scene_bricks, scene_init["parts_plate"]))
-    errors.extend(verify_scene_min_distance(scene_bricks, min_distance_m))
-
-    # 一致性检查
-    errors.extend(verify_name_type_color_consistency(goal_bricks, scene_bricks))
-    errors.extend(verify_metadata(metadata, goal_bricks, task_class))
-
-    # planner 检查（可选）
+    if scene_init.get('geometry') != geometry_config():
+        errors.append('Missing/incompatible geometry configuration; regenerate legacy tasks with generator v2')
+    clearance = scene_init.get('min_distance_m')
+    if not _number(clearance) or clearance < MIN_CLEARANCE_M:
+        errors.append('Initial clearance must be at least 0.03 m')
+    task_class = metadata.get('task_class')
+    if not isinstance(task_class, str) or task_class not in TASK_CLASSES:
+        errors.append('Invalid metadata task_class')
+    if not isinstance(metadata.get('instance_id'), str) or not metadata.get('instance_id'):
+        errors.append('Invalid metadata instance_id')
+    if expected_id is not None and metadata.get('instance_id') != expected_id:
+        errors.append('metadata instance_id does not match directory')
+    if expected_class is not None and task_class != expected_class:
+        errors.append('metadata task_class does not match directory')
+    if not isinstance(metadata.get('seed'), int) or isinstance(metadata.get('seed'), bool):
+        errors.append('metadata seed must be an integer')
+    if not isinstance(metadata.get('num_blocks'), int) or isinstance(metadata.get('num_blocks'), bool) or metadata.get('num_blocks') != len(final_product.get('blocks', [])):
+        errors.append('metadata num_blocks is invalid')
+    if metadata.get('generator_version') != GENERATOR_VERSION:
+        errors.append('metadata generator_version must be 2')
+    if task_class == 'simple_multi_brick_stack' and metadata.get('stack_yaw_policy') != TIER2_YAW_POLICY:
+        errors.append('Tier 2 stack_yaw_policy is missing/incompatible; regenerate Tier 2 tasks')
+    if task_class in TASK_CLASSES[2:] and metadata.get('shape_policy') != SHAPE_POLICY:
+        errors.append('Tier 3/4 shape_policy is missing/incompatible; regenerate Tier 3/4 tasks')
+    if task_class == 'balanced_order_sensitive' and metadata.get('center_boundary_policy') != TIER4_CENTER_POLICY:
+        errors.append('Tier 4 center_boundary_policy is missing/incompatible; regenerate Tier 4 tasks')
+    if metadata.get('verified') is not True or metadata.get('validation_scope') != 'static_grid_and_side_strip_proxy':
+        errors.append('metadata must identify successful static validation and its scope')
+    if metadata.get('planner_checked') is not False:
+        errors.append('No physics/robot planner is connected; planner_checked must be false')
     if use_planner:
-        errors.extend(planner_check_placeholder(goal_bricks))
+        errors.append('Robot/physics planner validation is unavailable')
+    if errors:
+        return False, errors
+    goals = parse_bricks(final_product['blocks'])
+    scene = parse_bricks(scene_init['blocks'])
+    errors.extend(verify_goal_geometry(goals, scene_init['assembly_plate'], task_class))
+    if task_class in TASK_CLASSES[2:]:
+        levels = {layer(b, scene_init['assembly_plate']['center'][2]) for b in goals}
+        yaws = {b.yaw_deg() for b in goals}
+        if len(levels) > 3 or any(z > 2 for z in levels):
+            errors.append('simple_three_layer_row_v1 allows at most three layers')
+        if len(yaws) != 1:
+            errors.append('simple_three_layer_row_v1 requires parallel brick footprints')
+        else:
+            cross_axis = 1 if next(iter(yaws)) == 0 else 0
+            if any(abs(b.pos[cross_axis]-goals[0].pos[cross_axis]) > EPS for b in goals):
+                errors.append('simple_three_layer_row_v1 requires one straight row')
+    pick = scene_init['parts_plate']
+    asm = scene_init['assembly_plate']
+    if abs(pick['center'][0]-asm['center'][0]) < (pick['size'][0]+asm['size'][0])/2-EPS and abs(pick['center'][1]-asm['center'][1]) < (pick['size'][1]+asm['size'][1])/2-EPS:
+        errors.append('Pick and assembly regions must be disjoint')
+    for b in scene:
+        if not within_plate(b, pick):
+            errors.append(f'{b.name}: outside parts plate')
+        if abs(b.pos[2]-pick['center'][2]) > EPS:
+            errors.append(f'{b.name}: initial scene must be flat')
+    for i, a in enumerate(scene):
+        for b in scene[i+1:]:
+            if rect_distance(a, b) < clearance-EPS:
+                errors.append(f'Initial clearance violation: {a.name} / {b.name}')
+    goal_map = {b.name: (b.type, b.color) for b in goals}
+    scene_map = {b.name: (b.type, b.color) for b in scene}
+    if goal_map != scene_map:
+        errors.append('Scene and goal names/types/colors differ')
+    try:
+        order = list(reversed(static_disassembly_order(goals, asm['center'][2])))
+        if metadata.get('static_assembly_order') != order:
+            errors.append('metadata static_assembly_order does not match the static witness')
+    except ValueError as e:
+        errors.append(str(e))
+    return not errors, errors
 
-    return len(errors) == 0, errors
+
+def verify_instance_dir(instance_dir, use_planner=False):
+    directory = Path(instance_dir)
+    try:
+        data = [load_yaml(directory/name) for name in ['final_product.yaml', 'scene_init.yaml', 'metadata.yaml']]
+        return verify_instance_data(*data, expected_id=directory.name, expected_class=directory.parent.name, use_planner=use_planner)
+    except (OSError, ValueError, TypeError, KeyError, yaml.YAMLError) as e:
+        return False, [f'Cannot validate instance: {e}']
 
 
-def verify_benchmark_root(root_dir: str, use_planner: bool = False) -> Tuple[int, int]:
-    """
-    扫描 benchmark 根目录下所有 instance 目录
-    """
-    total = 0
+def verify_benchmark_root(root_dir, use_planner=False):
+    directories = sorted(p for p in Path(root_dir).glob('*/*') if p.is_dir())
     passed = 0
-
-    for task_class in os.listdir(root_dir):
-        task_class_dir = os.path.join(root_dir, task_class)
-        if not os.path.isdir(task_class_dir):
-            continue
-
-        for instance_name in os.listdir(task_class_dir):
-            instance_dir = os.path.join(task_class_dir, instance_name)
-            if not os.path.isdir(instance_dir):
-                continue
-
-            total += 1
-            ok, errors = verify_instance_dir(instance_dir, use_planner=use_planner)
-            if ok:
-                passed += 1
-                print(f"[PASS] {instance_dir}")
-            else:
-                print(f"[FAIL] {instance_dir}")
-                for e in errors:
-                    print(f"  - {e}")
-
-    return passed, total
-
-
-# =========================
-# CLI
-# =========================
-
-def parse_args():
-    parser = argparse.ArgumentParser(description="Verifier for LEGO Duplo benchmark instances")
-    parser.add_argument(
-        "--instance_dir",
-        type=str,
-        default=None,
-        help="Verify a single instance directory"
-    )
-    parser.add_argument(
-        "--benchmark_root",
-        type=str,
-        default=None,
-        help="Verify all instances under benchmark root"
-    )
-    parser.add_argument(
-        "--use_planner",
-        action="store_true",
-        help="Enable optional planner validation"
-    )
-    return parser.parse_args()
+    for directory in directories:
+        ok, errors = verify_instance_dir(directory, use_planner)
+        passed += int(ok)
+        print(f'[{"PASS" if ok else "FAIL"}] {directory}')
+        for error in errors:
+            print(f'  - {error}')
+    return passed, len(directories)
 
 
 def main():
-    args = parse_args()
-
-    if args.instance_dir is None and args.benchmark_root is None:
-        raise ValueError("Please provide either --instance_dir or --benchmark_root")
-
-    if args.instance_dir is not None:
-        ok, errors = verify_instance_dir(args.instance_dir, use_planner=args.use_planner)
-        if ok:
-            print(f"[PASS] {args.instance_dir}")
-        else:
-            print(f"[FAIL] {args.instance_dir}")
-            for e in errors:
-                print(f"  - {e}")
-
-    if args.benchmark_root is not None:
-        passed, total = verify_benchmark_root(args.benchmark_root, use_planner=args.use_planner)
-        print(f"\nSummary: {passed}/{total} instances passed.")
+    parser = argparse.ArgumentParser(description=__doc__)
+    target = parser.add_mutually_exclusive_group(required=True)
+    target.add_argument('--instance_dir')
+    target.add_argument('--benchmark_root')
+    parser.add_argument('--use_planner', action='store_true')
+    args = parser.parse_args()
+    if args.instance_dir:
+        ok, errors = verify_instance_dir(args.instance_dir, args.use_planner)
+        print(f'[{"PASS" if ok else "FAIL"}] {args.instance_dir}')
+        for error in errors:
+            print(f'  - {error}')
+        return 0 if ok else 1
+    passed, total = verify_benchmark_root(args.benchmark_root, args.use_planner)
+    print(f'Summary: {passed}/{total} instances passed.')
+    return 0 if total > 0 and passed == total else 1
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    sys.exit(main())

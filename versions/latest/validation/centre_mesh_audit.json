@@ -1,0 +1,2024 @@
+{
+  "definition": "At least one upper brick XY centre on or outside ground footprint bounding rectangle; footprint alone is insufficient.",
+  "old_current_tier4_center_rule_passed_before_fix": 0,
+  "old_current_tier4_total": 100,
+  "maximum_actual_mesh_center_error_mm": 3.799796122194721e-07,
+  "summary": {
+    "paper": {
+      "total": 100,
+      "center_rule_passed": 100,
+      "minimum_maximum_center_margin_mm": -5.743669362345827e-08,
+      "boundary_centres": 100,
+      "outside_centres": 0
+    },
+    "stl": {
+      "total": 100,
+      "center_rule_passed": 100,
+      "minimum_maximum_center_margin_mm": 0.20000032875396556,
+      "boundary_centres": 0,
+      "outside_centres": 100
+    }
+  },
+  "actual_transformed_paper_mesh_centres": [
+    {
+      "instance_id": "balanced_order_sensitive_001",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -64.00000005128166,
+        -31.999999948718344,
+        83.99999994871834,
+        116.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -48.0,
+            116.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_002",
+      "actual_ground_mesh_xy_bounds_mm": [
+        63.999999942563306,
+        128.0000000574367,
+        163.9999999425633,
+        196.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            180.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_003",
+      "actual_ground_mesh_xy_bounds_mm": [
+        47.99999994871834,
+        80.00000005128166,
+        147.99999994871834,
+        212.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            212.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_004",
+      "actual_ground_mesh_xy_bounds_mm": [
+        47.999999993844966,
+        80.00000000615503,
+        115.99999999384497,
+        148.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            116.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_005",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -16.000000006155037,
+        16.000000006155037,
+        83.99999999384497,
+        180.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 6,
+          "actual_mesh_xy_center_mm": [
+            0.0,
+            84.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_006",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -32.0,
+        32.0,
+        132.0,
+        164.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            32.0,
+            148.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_007",
+      "actual_ground_mesh_xy_bounds_mm": [
+        16.0,
+        80.0,
+        116.0,
+        148.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            80.0,
+            132.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_008",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -16.00000005743669,
+        16.00000005743669,
+        179.9999999425633,
+        212.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -16.0,
+            196.0
+          ],
+          "signed_center_margin_mm": -5.743669007074459e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_009",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -5.743669007074459e-08,
+        64.0000000574367,
+        51.999999942563306,
+        84.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            0.0,
+            68.0
+          ],
+          "signed_center_margin_mm": -5.743669007074459e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_010",
+      "actual_ground_mesh_xy_bounds_mm": [
+        15.999999993844963,
+        48.000000006155034,
+        99.99999999384497,
+        196.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 7,
+          "actual_mesh_xy_center_mm": [
+            32.0,
+            100.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_011",
+      "actual_ground_mesh_xy_bounds_mm": [
+        63.999999942563306,
+        128.0000000574367,
+        227.9999999425633,
+        260.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            244.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_012",
+      "actual_ground_mesh_xy_bounds_mm": [
+        15.999999948718344,
+        48.00000005128166,
+        195.99999994871834,
+        228.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            32.0,
+            228.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_013",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -64.0000000574367,
+        5.743669007074459e-08,
+        163.9999999425633,
+        196.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -64.0,
+            180.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_014",
+      "actual_ground_mesh_xy_bounds_mm": [
+        47.999999993844966,
+        80.00000000615503,
+        67.99999999384497,
+        132.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            68.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_015",
+      "actual_ground_mesh_xy_bounds_mm": [
+        0.0,
+        96.0,
+        100.0,
+        132.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 8,
+          "actual_mesh_xy_center_mm": [
+            96.0,
+            116.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_016",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -112.0000000574367,
+        -79.9999999425633,
+        51.999999942563306,
+        84.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -112.0,
+            68.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_017",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -112.0000000574367,
+        -47.999999942563306,
+        147.9999999425633,
+        180.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -112.0,
+            164.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_018",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -128.00000000615503,
+        -95.99999999384497,
+        195.99999999384497,
+        260.00000000615506
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            -112.0,
+            196.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_019",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.00000000615503,
+        -63.999999993844966,
+        131.99999999384497,
+        164.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -80.0,
+            132.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_020",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -16.00000005743669,
+        112.0000000574367,
+        83.9999999425633,
+        116.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 9,
+          "actual_mesh_xy_center_mm": [
+            -16.0,
+            100.0
+          ],
+          "signed_center_margin_mm": -5.743669007074459e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_021",
+      "actual_ground_mesh_xy_bounds_mm": [
+        95.99999999384497,
+        128.00000000615503,
+        179.99999999384497,
+        244.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            112.0,
+            180.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_022",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -128.0,
+        -64.0,
+        52.0,
+        84.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            -64.0,
+            68.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_023",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.00000000615503,
+        -63.999999993844966,
+        99.99999999384497,
+        132.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -80.0,
+            100.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_024",
+      "actual_ground_mesh_xy_bounds_mm": [
+        79.99999999384497,
+        112.00000000615503,
+        179.99999999384497,
+        244.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            96.0,
+            180.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_025",
+      "actual_ground_mesh_xy_bounds_mm": [
+        31.999999948718344,
+        64.00000005128166,
+        51.99999994871834,
+        148.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 6,
+          "actual_mesh_xy_center_mm": [
+            48.0,
+            148.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_026",
+      "actual_ground_mesh_xy_bounds_mm": [
+        0.0,
+        64.0,
+        116.0,
+        148.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            132.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_027",
+      "actual_ground_mesh_xy_bounds_mm": [
+        95.99999994871834,
+        128.00000005128166,
+        163.99999994871834,
+        196.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            112.0,
+            196.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_028",
+      "actual_ground_mesh_xy_bounds_mm": [
+        31.999999948718344,
+        64.00000005128166,
+        147.99999994871834,
+        212.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            48.0,
+            212.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_029",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -80.00000005128166,
+        -47.99999994871834,
+        147.99999994871834,
+        212.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            -64.0,
+            212.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_030",
+      "actual_ground_mesh_xy_bounds_mm": [
+        63.99999994871834,
+        96.00000005128166,
+        67.99999994871834,
+        164.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 7,
+          "actual_mesh_xy_center_mm": [
+            80.0,
+            164.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_031",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -64.00000005128166,
+        -31.999999948718344,
+        211.99999994871834,
+        244.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -48.0,
+            244.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_032",
+      "actual_ground_mesh_xy_bounds_mm": [
+        79.99999999384497,
+        112.00000000615503,
+        163.99999999384497,
+        228.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            96.0,
+            164.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_033",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.00000005128166,
+        -63.99999994871834,
+        131.99999994871834,
+        196.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            -80.0,
+            196.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_034",
+      "actual_ground_mesh_xy_bounds_mm": [
+        31.999999993844963,
+        64.00000000615503,
+        83.99999999384497,
+        116.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            48.0,
+            84.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_035",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -48.000000057436694,
+        48.000000057436694,
+        51.999999942563306,
+        84.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 8,
+          "actual_mesh_xy_center_mm": [
+            -48.0,
+            68.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_036",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -48.000000057436694,
+        16.00000005743669,
+        67.9999999425633,
+        100.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -48.0,
+            84.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_037",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.0000000574367,
+        -31.99999994256331,
+        67.9999999425633,
+        100.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            -96.0,
+            84.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_038",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -112.00000000615503,
+        -79.99999999384497,
+        83.99999999384497,
+        116.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -96.0,
+            84.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_039",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -112.00000005128166,
+        -79.99999994871834,
+        179.99999994871834,
+        244.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -96.0,
+            244.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_040",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -80.0,
+        48.0,
+        180.0,
+        212.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 9,
+          "actual_mesh_xy_center_mm": [
+            48.0,
+            196.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_041",
+      "actual_ground_mesh_xy_bounds_mm": [
+        79.99999994871834,
+        112.00000005128166,
+        51.99999994871834,
+        116.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            96.0,
+            116.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_042",
+      "actual_ground_mesh_xy_bounds_mm": [
+        80.0,
+        112.0,
+        52.0,
+        84.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            112.0,
+            68.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_043",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -80.00000000615503,
+        -47.999999993844966,
+        179.99999999384497,
+        244.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -64.0,
+            180.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_044",
+      "actual_ground_mesh_xy_bounds_mm": [
+        95.99999999384497,
+        128.00000000615503,
+        147.99999999384497,
+        212.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            112.0,
+            148.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_045",
+      "actual_ground_mesh_xy_bounds_mm": [
+        15.999999993844963,
+        48.000000006155034,
+        147.99999999384497,
+        244.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 6,
+          "actual_mesh_xy_center_mm": [
+            32.0,
+            148.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_046",
+      "actual_ground_mesh_xy_bounds_mm": [
+        63.999999942563306,
+        96.0000000574367,
+        83.9999999425633,
+        116.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            100.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_047",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -48.0,
+        16.0,
+        68.0,
+        100.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            16.0,
+            84.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_048",
+      "actual_ground_mesh_xy_bounds_mm": [
+        63.999999942563306,
+        128.0000000574367,
+        211.9999999425633,
+        244.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            228.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_049",
+      "actual_ground_mesh_xy_bounds_mm": [
+        47.99999994871834,
+        80.00000005128166,
+        115.99999994871834,
+        148.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            148.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_050",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -6.155037368671401e-09,
+        32.000000006155034,
+        147.99999999384497,
+        244.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 7,
+          "actual_mesh_xy_center_mm": [
+            15.999999999999998,
+            148.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_051",
+      "actual_ground_mesh_xy_bounds_mm": [
+        31.99999994256331,
+        96.0000000574367,
+        147.9999999425633,
+        180.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            32.0,
+            164.0
+          ],
+          "signed_center_margin_mm": -5.743669007074459e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_052",
+      "actual_ground_mesh_xy_bounds_mm": [
+        32.0,
+        96.0,
+        52.0,
+        84.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            96.0,
+            68.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_053",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -64.0,
+        -32.0,
+        100.0,
+        132.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -32.0,
+            116.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_054",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.00000000615503,
+        -63.999999993844966,
+        179.99999999384497,
+        244.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -80.0,
+            180.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_055",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -64.0,
+        32.0,
+        132.0,
+        164.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 8,
+          "actual_mesh_xy_center_mm": [
+            32.0,
+            148.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_056",
+      "actual_ground_mesh_xy_bounds_mm": [
+        63.99999994871834,
+        96.00000005128166,
+        99.99999994871834,
+        164.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            80.0,
+            164.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_057",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.0000000574367,
+        -63.999999942563306,
+        67.9999999425633,
+        100.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -96.0,
+            84.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_058",
+      "actual_ground_mesh_xy_bounds_mm": [
+        79.99999999384497,
+        112.00000000615503,
+        163.99999999384497,
+        228.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            96.0,
+            164.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_059",
+      "actual_ground_mesh_xy_bounds_mm": [
+        31.999999993844963,
+        64.00000000615503,
+        179.99999999384497,
+        244.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            48.0,
+            180.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_060",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -64.0,
+        64.0,
+        116.0,
+        148.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 10,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            132.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_061",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.00000005128166,
+        -63.99999994871834,
+        195.99999994871834,
+        228.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -80.0,
+            228.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_062",
+      "actual_ground_mesh_xy_bounds_mm": [
+        15.999999948718344,
+        48.00000005128166,
+        179.99999994871834,
+        244.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            32.0,
+            244.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_063",
+      "actual_ground_mesh_xy_bounds_mm": [
+        31.999999993844963,
+        64.00000000615503,
+        131.99999999384497,
+        196.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            48.0,
+            132.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_064",
+      "actual_ground_mesh_xy_bounds_mm": [
+        79.9999999425633,
+        112.0000000574367,
+        83.9999999425633,
+        116.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            80.0,
+            100.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_065",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -80.00000005128166,
+        -47.99999994871834,
+        67.99999994871834,
+        164.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 6,
+          "actual_mesh_xy_center_mm": [
+            -64.0,
+            164.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_066",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.0,
+        -32.0,
+        84.0,
+        116.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -32.0,
+            100.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_067",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -32.00000005128166,
+        5.128165625478687e-08,
+        51.99999994871834,
+        116.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            -16.0,
+            116.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_068",
+      "actual_ground_mesh_xy_bounds_mm": [
+        47.99999994871834,
+        80.00000005128166,
+        147.99999994871834,
+        180.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            180.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_069",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -16.00000005743669,
+        48.000000057436694,
+        51.999999942563306,
+        84.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -16.0,
+            68.0
+          ],
+          "signed_center_margin_mm": -5.743669007074459e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_070",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.00000005128166,
+        -63.99999994871834,
+        99.99999994871834,
+        196.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 7,
+          "actual_mesh_xy_center_mm": [
+            -80.0,
+            196.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_071",
+      "actual_ground_mesh_xy_bounds_mm": [
+        63.999999942563306,
+        128.0000000574367,
+        67.9999999425633,
+        100.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            84.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_072",
+      "actual_ground_mesh_xy_bounds_mm": [
+        0.0,
+        32.0,
+        196.0,
+        228.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            32.0,
+            212.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_073",
+      "actual_ground_mesh_xy_bounds_mm": [
+        95.99999994871834,
+        128.00000005128166,
+        67.99999994871834,
+        132.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            112.0,
+            132.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_074",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.00000005128166,
+        -63.99999994871834,
+        83.99999994871834,
+        148.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            -80.0,
+            148.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_075",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -64.0000000574367,
+        32.000000057436694,
+        67.9999999425633,
+        100.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 8,
+          "actual_mesh_xy_center_mm": [
+            -64.0,
+            84.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_076",
+      "actual_ground_mesh_xy_bounds_mm": [
+        63.999999942563306,
+        96.0000000574367,
+        179.9999999425633,
+        212.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            196.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_077",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.0000000574367,
+        -31.99999994256331,
+        227.9999999425633,
+        260.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -96.0,
+            244.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_078",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -16.00000005743669,
+        48.000000057436694,
+        131.9999999425633,
+        164.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            -16.0,
+            148.0
+          ],
+          "signed_center_margin_mm": -5.743669007074459e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_079",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -16.0,
+        16.0,
+        212.0,
+        244.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            16.0,
+            228.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_080",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -48.000000057436694,
+        80.0000000574367,
+        147.9999999425633,
+        180.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 11,
+          "actual_mesh_xy_center_mm": [
+            -48.0,
+            164.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_081",
+      "actual_ground_mesh_xy_bounds_mm": [
+        15.999999993844963,
+        48.000000006155034,
+        83.99999999384497,
+        148.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            32.0,
+            84.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_082",
+      "actual_ground_mesh_xy_bounds_mm": [
+        0.0,
+        64.0,
+        228.0,
+        260.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            64.0,
+            244.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_083",
+      "actual_ground_mesh_xy_bounds_mm": [
+        48.0,
+        80.0,
+        52.0,
+        84.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            80.0,
+            68.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_084",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -6.155037368671401e-09,
+        32.000000006155034,
+        179.99999999384497,
+        244.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            15.999999999999998,
+            180.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_085",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.00000005128166,
+        -63.99999994871834,
+        51.99999994871834,
+        148.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 6,
+          "actual_mesh_xy_center_mm": [
+            -80.0,
+            148.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_086",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -112.0,
+        -48.0,
+        84.0,
+        116.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            -48.0,
+            100.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_087",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -112.00000005128166,
+        -79.99999994871834,
+        147.99999994871834,
+        180.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -96.0,
+            180.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_088",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.0,
+        -32.0,
+        100.0,
+        132.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -32.0,
+            116.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_089",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -64.00000000615503,
+        -31.999999993844963,
+        83.99999999384497,
+        148.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            -48.0,
+            84.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_090",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -16.000000051281656,
+        16.000000051281656,
+        67.99999994871834,
+        164.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 7,
+          "actual_mesh_xy_center_mm": [
+            0.0,
+            164.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_091",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.00000000615503,
+        -63.999999993844966,
+        163.99999999384497,
+        196.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            -80.0,
+            164.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_092",
+      "actual_ground_mesh_xy_bounds_mm": [
+        95.99999994871834,
+        128.00000005128166,
+        51.99999994871834,
+        116.00000005128166
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            112.0,
+            116.0
+          ],
+          "signed_center_margin_mm": -5.1281659807500546e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_093",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.0,
+        -32.0,
+        84.0,
+        116.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            -32.0,
+            100.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_094",
+      "actual_ground_mesh_xy_bounds_mm": [
+        63.999999993844966,
+        96.00000000615503,
+        67.99999999384497,
+        100.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            80.0,
+            68.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_095",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -32.000000006155034,
+        6.155037368671401e-09,
+        115.99999999384497,
+        212.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 8,
+          "actual_mesh_xy_center_mm": [
+            -15.999999999999998,
+            116.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_096",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -96.0000000574367,
+        -31.99999994256331,
+        195.9999999425633,
+        228.0000000574367
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -96.0,
+            212.0
+          ],
+          "signed_center_margin_mm": -5.743669362345827e-08,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_097",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -32.0,
+        32.0,
+        100.0,
+        132.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 5,
+          "actual_mesh_xy_center_mm": [
+            32.0,
+            116.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_098",
+      "actual_ground_mesh_xy_bounds_mm": [
+        63.999999993844966,
+        96.00000000615503,
+        195.99999999384497,
+        228.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 3,
+          "actual_mesh_xy_center_mm": [
+            80.0,
+            196.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_099",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -112.00000000615503,
+        -79.99999999384497,
+        99.99999999384497,
+        164.00000000615503
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 4,
+          "actual_mesh_xy_center_mm": [
+            -96.0,
+            100.0
+          ],
+          "signed_center_margin_mm": -6.155033815957722e-09,
+          "relation": "boundary"
+        }
+      ]
+    },
+    {
+      "instance_id": "balanced_order_sensitive_100",
+      "actual_ground_mesh_xy_bounds_mm": [
+        -80.0,
+        80.0,
+        164.0,
+        196.0
+      ],
+      "qualifying_upper_centres": [
+        {
+          "id": 12,
+          "actual_mesh_xy_center_mm": [
+            80.0,
+            180.0
+          ],
+          "signed_center_margin_mm": 0.0,
+          "relation": "boundary"
+        }
+      ]
+    }
+  ]
+}

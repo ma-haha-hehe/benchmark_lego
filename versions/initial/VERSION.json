@@ -1,0 +1,16 @@
+{
+  "version": "initial",
+  "task_instances": 400,
+  "task_classes": {
+    "simple_multi_brick_stack": 100,
+    "balanced_order_sensitive": 100,
+    "simple_shape_assembly": 100,
+    "two_brick_stack": 100
+  },
+  "task_yaml_files": 1200,
+  "task_path": "versions/initial/tasks",
+  "image_gallery": "versions/initial/images/index.html",
+  "image_samples": 24,
+  "image_png_files": 76,
+  "description": "First generated dataset matched to the first paper-style previews; historical rules"
+}

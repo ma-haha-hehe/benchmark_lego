@@ -1,0 +1,40 @@
+test_empty_verification_root_fails (test_generation.CliTests.test_empty_verification_root_fails) ... ok
+test_impossible_clearance_is_bounded_and_fails (test_generation.CliTests.test_impossible_clearance_is_bounded_and_fails) ... ok
+test_invalid_arguments_fail (test_generation.CliTests.test_invalid_arguments_fail) ... ok
+test_tier2_cli_accepts_two_bricks_and_rejects_counts_outside_range (test_generation.CliTests.test_tier2_cli_accepts_two_bricks_and_rejects_counts_outside_range) ... ok
+test_all_counts_and_seed_reproduction (test_generation.GenerationTests.test_all_counts_and_seed_reproduction) ... ok
+test_default_counts_match_80_15_5_quotas (test_generation.GenerationTests.test_default_counts_match_80_15_5_quotas) ... ok
+test_dense_scene_fallback_preserves_clearance (test_generation.GenerationTests.test_dense_scene_fallback_preserves_clearance) ... ok
+test_mesh_dimensions_agree_with_stud_pitch (test_generation.GenerationTests.test_mesh_dimensions_agree_with_stud_pitch) ... ok
+test_no_silent_overwrite (test_generation.GenerationTests.test_no_silent_overwrite) ... ok
+test_planner_cannot_be_falsely_certified (test_generation.GenerationTests.test_planner_cannot_be_falsely_certified) ... ok
+test_random_shape_counts_use_the_same_bucket_thresholds (test_generation.GenerationTests.test_random_shape_counts_use_the_same_bucket_thresholds) ... ok
+test_random_tier2_counts_match_small_stack_preference (test_generation.GenerationTests.test_random_tier2_counts_match_small_stack_preference) ... ok
+test_shape_policy_stays_simple_for_every_permitted_count (test_generation.GenerationTests.test_shape_policy_stays_simple_for_every_permitted_count) ... ok
+test_tier2_defaults_prefer_two_and_three_bricks (test_generation.GenerationTests.test_tier2_defaults_prefer_two_and_three_bricks) ... ok
+test_centred_cross_is_accepted_but_45_degrees_is_rejected (test_generation.Tier2QuarterTurnTests.test_centred_cross_is_accepted_but_45_degrees_is_rejected) ... ok
+test_every_yaw_pattern_and_plate_edge_preserves_one_centre (test_generation.Tier2QuarterTurnTests.test_every_yaw_pattern_and_plate_edge_preserves_one_centre) ... ok
+test_quarter_turn_does_not_allow_a_shifted_centre (test_generation.Tier2QuarterTurnTests.test_quarter_turn_does_not_allow_a_shifted_centre) ... ok
+test_tier1_still_requires_fixed_yaw (test_generation.Tier2QuarterTurnTests.test_tier1_still_requires_fixed_yaw) ... ok
+test_tier2_records_and_requires_revised_policy (test_generation.Tier2QuarterTurnTests.test_tier2_records_and_requires_revised_policy) ... ok
+test_edge_and_outside_centres_are_accepted_in_all_four_directions (test_generation.Tier4CentreBoundaryTests.test_edge_and_outside_centres_are_accepted_in_all_four_directions) ... ok
+test_every_count_and_seed_has_an_upper_centre_on_the_boundary (test_generation.Tier4CentreBoundaryTests.test_every_count_and_seed_has_an_upper_centre_on_the_boundary) ... ok
+test_footprint_overhang_with_all_centres_inside_is_rejected (test_generation.Tier4CentreBoundaryTests.test_footprint_overhang_with_all_centres_inside_is_rejected) ... ok
+test_revised_centre_policy_is_required (test_generation.Tier4CentreBoundaryTests.test_revised_centre_policy_is_required) ... ok
+test_duplicate_yaml_keys_rejected (test_generation.VerifierCounterexampleTests.test_duplicate_yaml_keys_rejected) ... ok
+test_floating_is_rejected (test_generation.VerifierCounterexampleTests.test_floating_is_rejected) ... ok
+test_invalid_type_and_malformed_poses_do_not_crash (test_generation.VerifierCounterexampleTests.test_invalid_type_and_malformed_poses_do_not_crash) ... ok
+test_legacy_geometry_is_explicitly_rejected (test_generation.VerifierCounterexampleTests.test_legacy_geometry_is_explicitly_rejected) ... ok
+test_metadata_checked_against_directory (test_generation.VerifierCounterexampleTests.test_metadata_checked_against_directory) ... ok
+test_overlap_is_rejected (test_generation.VerifierCounterexampleTests.test_overlap_is_rejected) ... ok
+test_roll_is_rejected (test_generation.VerifierCounterexampleTests.test_roll_is_rejected) ... ok
+test_scene_overlap_and_below_minimum_clearance (test_generation.VerifierCounterexampleTests.test_scene_overlap_and_below_minimum_clearance) ... ok
+test_shape_policy_cannot_claim_legacy_or_complex_layouts (test_generation.VerifierCounterexampleTests.test_shape_policy_cannot_claim_legacy_or_complex_layouts) ... ok
+test_shifted_stack_is_rejected (test_generation.VerifierCounterexampleTests.test_shifted_stack_is_rejected) ... ok
+test_tier4_rejects_tier3_centres_inside (test_generation.VerifierCounterexampleTests.test_tier4_rejects_tier3_centres_inside) ... ok
+test_wrong_witness_is_rejected (test_generation.VerifierCounterexampleTests.test_wrong_witness_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 35 tests in 0.715s
+
+OK

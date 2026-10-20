@@ -1,0 +1,163 @@
+geometry:
+  length_unit: m
+  rotation_unit: rad
+  pose_origin: xy_center_body_bottom
+  stud_pitch_m: 0.016
+  engaged_layer_height_m: 0.02
+  min_support_ratio: 0.5
+  gripper_side_clearance_m: 0.008
+  mesh_scale:
+  - 0.001
+  - 0.001
+  - 0.001
+  mesh_recenter_xy: true
+min_distance_m: 0.03
+parts_plate:
+  center:
+  - 0.0
+  - -0.16
+  - 0.0
+  size:
+  - 0.4
+  - 0.28
+assembly_plate:
+  center:
+  - 0.0
+  - 0.16
+  - 0.0
+  size:
+  - 0.32
+  - 0.28
+blocks:
+- name: 2x2_brick_1
+  type: brick_2x2
+  color: green
+  pos:
+  - 0.156248
+  - -0.243665
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 3.14159265
+- name: 2x2_brick_2
+  type: brick_2x2
+  color: green
+  pos:
+  - -0.160712
+  - -0.273879
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 1.57079633
+- name: 2x2_brick_3
+  type: brick_2x2
+  color: green
+  pos:
+  - 0.17027
+  - -0.178625
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 1.57079633
+- name: 2x2_brick_4
+  type: brick_2x2
+  color: green
+  pos:
+  - -0.06898
+  - -0.126962
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 4.71238898
+- name: 4x2_brick_5
+  type: brick_4x2
+  color: blue
+  pos:
+  - 0.087648
+  - -0.138899
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 4.71238898
+- name: 4x2_brick_6
+  type: brick_4x2
+  color: blue
+  pos:
+  - -0.068622
+  - -0.203866
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 3.14159265
+- name: 4x2_brick_7
+  type: brick_4x2
+  color: yellow
+  pos:
+  - 0.065943
+  - -0.239618
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 0.0
+- name: 2x2_brick_8
+  type: brick_2x2
+  color: yellow
+  pos:
+  - -0.107854
+  - -0.038187
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 4.71238898
+- name: 2x2_brick_9
+  type: brick_2x2
+  color: blue
+  pos:
+  - 0.136169
+  - -0.036694
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 3.14159265
+- name: 2x2_brick_10
+  type: brick_2x2
+  color: green
+  pos:
+  - -0.162653
+  - -0.206802
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 0.0
+- name: 4x2_brick_11
+  type: brick_4x2
+  color: yellow
+  pos:
+  - 0.017146
+  - -0.083177
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 1.57079633
+- name: 2x2_brick_12
+  type: brick_2x2
+  color: blue
+  pos:
+  - -0.179142
+  - -0.074121
+  - 0.0
+  rotation:
+  - 0.0
+  - 0.0
+  - 3.14159265

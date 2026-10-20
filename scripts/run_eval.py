@@ -158,8 +158,7 @@ def collect_instance_dirs(
 # 目标判定与进度统计
 # =========================================================
 
-STUD = 0.032
-BRICK_H = 0.020
+from geometry import STUD, BRICK_H
 
 
 def yaw_deg_from_rad(yaw_rad: float) -> int:

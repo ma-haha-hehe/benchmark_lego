@@ -1,0 +1,28 @@
+# 图片与任务对应位置
+
+完整任务本体在 `../tasks/`（仓库路径 `versions/initial/tasks/`），400 个。图片中 `sources/` 是所展示样例的检查副本。
+
+# 最初论文风格预览（历史快照）
+
+保留第一次论文风格预览的 24 个样例，图片和 72 个源 YAML 原样保存。旧规则只用于历史对照；最新版在 `../../latest/images/`。`manifest.csv` 中的 source_path 指向 ../tasks/ 中的完整初版任务，historical_source_path 保留当时的原路径。
+
+# 生成任务预览
+
+- 每个 Tier 6 个样例，总计 24 个；Tier 3/4 各包含 3、4、6、8、10、12 砖。
+- `tier_*_contact_sheet.png`：每层级六个目标图。
+- `details/*.png`：同一任务的正反目标视图、分层图与初始摆放。
+- `pairs/*.png`：论文 Fig. 1 风格的“初始摆放 → 目标装配”对照图。
+- `index.html`：离线浏览入口，点击图像打开详细图。
+- `sources/` 保存对应 YAML 的原始副本；`manifest.csv` 保存路径、seed 与 SHA-256。
+- 颜色按 YAML 映射；二维编号对应 `final_product.yaml` 的砖顺序。
+- 默认 `--style paper` 复现 symposium paper Fig. 1/3 样式：纯色简化砖块、实心圆柱凸点、黑轮廓、灰色网格，不是论文原始绘图脚本。
+- 论文风格模型采用名义 32×32 / 64×32 mm 底面、20 mm 砖体和 3.75 mm 凸点。位姿、类型、颜色均读取 YAML；没有修改任务或 STL。`--style stl` 可渲染实际 STL 几何。
+- 3D XY 仅为显示居中，层间距 20 mm。使用逐像素深度缓冲，避免 STL 内面穿透的绘图伪影。
+- 分层图采用 32×32 / 64×32 mm 名义轮廓。灰虚线为上一层支撑，紫点线为地面外包络；凸点仅用于示意。
+- 支撑率为相邻层轮廓交叠比例。这些图不证明物理稳定性、正确插接或机器人可执行性。
+
+重建（不修改源任务）：
+```sh
+python scripts/visualize_task.py --repo /path/to/benchmark_lego --output /path/to/previews
+```
+需要安装 `requirements-visualization.txt` 中的可选依赖。

@@ -1,0 +1,12 @@
+{
+  "scripts/generator.py": "6b14516b87e770e68cfa9d4f85a6dd4b05db4dff70154ae8ddf73c04df50e2b3",
+  "scripts/geometry.py": "34375cf7211cc388c3312c0558d3a4e04408095c6ac2f1126a24e250ec3ab1e3",
+  "scripts/verifier.py": "c46d28326c4df405f8232a85a68792a1e8a704678261e2d14dc96c284f572ece",
+  "scripts/render_gallery.py": "72786a28c3b3b48f9ce9db79573fbd85a2736d490c794e0fbc02ceea8189e862",
+  "scripts/visualize_task.py": "74ea09219d1a530f68862c534abc573cd0c65bb3e69e5acb94016d363bfe645f",
+  "scripts/visualize_tier4_centres.py": "3ce157a9867188859885a2d70f823b254d5e560c623540395a6ba8109f04c423",
+  "tests/test_generation.py": "295c9627f30f99e3d6b0b9237decf7ed0d6cfe58db01ddda3e212e10b98fdd9b",
+  "README.md": "1265893e471d06b453d39666160d6efe0a71718c4012001aa410ab7f08fd81bc",
+  "CHANGELOG.md": "d4f6ea03e9a7392a8b9d4abd4353445da5156c88d9dda46738629692cc203250",
+  "docs/tier_definitions.md": "f4cf43ebb2c3d0c24e32c09d07f40dcbd6ba3355e51f404fec4a10d9bed79ec9"
+}

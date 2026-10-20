@@ -1,0 +1,19 @@
+{
+  "samples": 24,
+  "tier_counts": {
+    "1": 6,
+    "2": 6,
+    "3": 6,
+    "4": 6
+  },
+  "png_files": 76,
+  "source_verifier_pass": 24,
+  "source_yaml_sha256_matches": 72,
+  "depth_order_regression_pass": true,
+  "render_style": "paper_fig_1_3_reproduction",
+  "paper_original_renderer_available": false,
+  "visual_review": "four contact sheets; 12-brick Tier 3 detail and Tier 4 initial-to-target pair",
+  "remote_writes": false,
+  "task_root": "versions/initial/tasks",
+  "canonical_full_task_matches": 72
+}

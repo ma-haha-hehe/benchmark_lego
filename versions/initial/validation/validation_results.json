@@ -1,0 +1,69 @@
+{
+  "total": 400,
+  "passed": 400,
+  "reproduced": 400,
+  "seconds": 4.436353041994153,
+  "summary": {
+    "balanced_order_sensitive": {
+      "total": 100,
+      "passed": 100,
+      "counts": {
+        "3": 10,
+        "4": 10,
+        "5": 10,
+        "6": 10,
+        "7": 10,
+        "8": 10,
+        "9": 10,
+        "10": 10,
+        "11": 10,
+        "12": 10
+      },
+      "minimum_support": 0.4999999999999987,
+      "minimum_initial_gap_m": 0.030024000000000002,
+      "external_overhang": 100
+    },
+    "simple_multi_brick_stack": {
+      "total": 100,
+      "passed": 100,
+      "counts": {
+        "3": 34,
+        "4": 33,
+        "5": 33
+      },
+      "minimum_support": 0.9999999999999991,
+      "minimum_initial_gap_m": 0.03006206223797693,
+      "external_overhang": 0
+    },
+    "simple_shape_assembly": {
+      "total": 100,
+      "passed": 100,
+      "counts": {
+        "3": 10,
+        "4": 10,
+        "5": 10,
+        "6": 10,
+        "7": 10,
+        "8": 10,
+        "9": 10,
+        "10": 10,
+        "11": 10,
+        "12": 10
+      },
+      "minimum_support": 0.4999999999999987,
+      "minimum_initial_gap_m": 0.030138000000000012,
+      "external_overhang": 0
+    },
+    "two_brick_stack": {
+      "total": 100,
+      "passed": 100,
+      "counts": {
+        "2": 100
+      },
+      "minimum_support": 0.9999999999999991,
+      "minimum_initial_gap_m": 0.030507,
+      "external_overhang": 0
+    }
+  },
+  "failures": []
+}
