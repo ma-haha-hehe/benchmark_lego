@@ -11,7 +11,7 @@
   "task_path": "versions/latest/tasks",
   "image_gallery": "versions/latest/images/index.html",
   "image_samples": 136,
-  "image_png_files": 497,
+  "image_png_files": 585,
   "description": "Current benchmark task generation rules",
   "featured_samples_per_tier": 12,
   "tier_image_galleries": {
@@ -28,5 +28,11 @@
     "4": 8,
     "5": 7
   },
-  "tier2_count_policy": "85_percent_2_to_3_15_percent_4_to_5"
+  "tier2_count_policy": "85_percent_2_to_3_15_percent_4_to_5",
+  "primary_target_camera": {
+    "azimuth_degrees": -60,
+    "elevation_degrees": 25,
+    "projection": "orthographic"
+  },
+  "tier4_primary_target_images": 100
 }

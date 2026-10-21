@@ -40,6 +40,8 @@ python3 scripts/render_gallery.py --output /tmp/workbenchmark_gallery_new
 
 渲染器会重新绘制全部视图。洋红轴固定在底层包络中点 G，紫线标包络，C 编号标砖中心，橙点标 Tier 4 合格中心。`manifest.csv` 保留任务与图片映射；逐次渲染审计输出只在本地使用。标注含义见 [tier_definitions.md](../docs/tier_definitions.md)。
 
+主示例统一使用 `target.png`；paper 风格固定方位角 −60°、仰角 25°，与既有 Tier 1–3 图像一致。渲染器为 Tier 4 全部 100 个任务生成这一主视图，`center_side.png` / `center_inspection.png` 单独作为辅助检查，不能替代 gallery 缩略图。
+
 ## 接入评估
 
 `run_eval.py` 是适配模板。使用前需实现：

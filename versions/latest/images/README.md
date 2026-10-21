@@ -4,6 +4,8 @@
 
 每个 Tier 有独立 tier_1/…tier_4/ 目录，每个精选样例至少四张图。每个任务使用完整实例 ID 命名，里面 target.png / initial_to_target.png / layers.png / inspection.png 分别是目标三维图、初始到目标、分层图和四图检查。Tier 2 有 center_check.png；Tier 4 有 center_side.png 和 center_inspection.png。
 
-当前每 Tier 精选 12 例；Tier 4 全部 100 例也包含中心检查。source/ 只用于对照图片；任务本体在 ../tasks/。默认按 symposium paper 风格绘制，静态图不认证接触物理。
+四个 Tier 的主示例统一使用 target.png：论文风格固定方位角 -60°、仰角 25°。侧视、分层和中心检查仅作为单独的辅助视图，不替代主示例。
+
+当前每 Tier 精选 12 例；Tier 4 全部 100 例均含 target.png 和独立中心检查。source/ 只用于对照图片；任务本体在 ../tasks/。默认按 symposium paper 风格绘制，静态图不认证接触物理。
 
 重新生成到新目录：python scripts/render_gallery.py --output /tmp/benchmark_gallery_new

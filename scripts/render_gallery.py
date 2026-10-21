@@ -18,13 +18,21 @@ READING={1:'看 C1、C2：两个中心应落在同一条洋红色竖轴上，分
          4:'先找橙色的上层 C 点，再比较紫色边界线：C 点必须压在线上或越过线。不是比较砖边，也不是比较洋红色参考轴。'}
 LEGEND='<p class="note"><b>统一图例：</b><span style="color:#c026b5">洋红 Z 轴 / 俯视十字</span>：底层包络中点 G 的竖直参考轴；<span style="color:#8b3fc0">紫色虚线</span>：底层整体边界；C1…CN：各砖 XY 中心（3D/侧视中标在砖体半高处）；<span style="color:#f97316">橙点</span>：Tier 4 满足边界规则的上层中心；<span style="color:#087e8b">青色 X/Y</span>：世界坐标正方向。G 不是重心，也不是每块砖必须达到的位置。初始散件图以料盘中心 P 为参考，不要求散件中心重合。隐藏中心也以检查标注显示。</p>'
 GROUND_NOTE='底层整体边界 = 所有底层砖的名义底面矩形围成的、与世界 X/Y 轴平行的最小外接矩形；不是单块砖的边界，也不代表空隙处有真实支撑。'
+PRIMARY_VIEW_NOTE='四个 Tier 的主示例统一使用 target.png：论文风格固定方位角 -60°、仰角 25°。侧视、分层和中心检查仅作为单独的辅助视图，不替代主示例。'
+
+
+def draw_target(blocks,meshes,title,tier,style):
+    """Use the original shared camera for every tier, including all Tier 4 tasks."""
+    return v.draw_mesh(blocks,meshes,title,-60 if style=='paper' else -55,
+                       elevation=25 if style=='paper' else 26,
+                       center_guides=tier==2,boundary_centres=tier==4)
 
 
 def definition_page(out,tiers,rows):
     table='<table style="width:100%;border-collapse:collapse"><tr><th>Tier</th><th>块数</th><th>判断条件</th></tr>'
     for t in tiers:table+=f'<tr><td><a href="tier_{t}/index.html">Tier {t}</a></td><td>{"2" if t==1 else "2–5（主要 2–3）" if t==2 else "3–12"}</td><td>{RULES[t]}</td></tr>'
     table+='</table>'
-    body='<p><a href="index.html">返回最新版图片</a></p>'+LEGEND+f'<p class="note">{GROUND_NOTE}</p>'+table
+    body='<p><a href="index.html">返回最新版图片</a></p>'+f'<p class="note">{PRIMARY_VIEW_NOTE}</p>'+LEGEND+f'<p class="note">{GROUND_NOTE}</p>'+table
     body+='<p>这是当前版本的任务定义。Tier 2 使用小块数分布与独立直角朝向，Tier 4 将上层中心位于底层包络边界纳入合格条件；这些生成约定与原论文的任务设置分别记录。</p><p>Tier 2 完整 100 个任务：2 块 43 个、3 块 42 个、4 块 8 个、5 块 7 个。2 块且同朝向的 Tier 2 样例可能与 Tier 1 外观相同；Tier 2 采用独立 0°/90° 朝向策略，类别不能仅凭块数区分。</p><p>Tier 3/4 当前生成策略：最多三层、直线且平行；每个 Tier 的完整 100 个任务为 80% 3–5 块、15% 6–8 块、5% 9–12 块。这是简化形状与数量分布策略，不是中心判断的替代条件。</p>'
     for t in tiers:
         r=next(r for r in rows if r['tier']==t and r['featured']);folder=r['image_directory'];second='center_side.png' if t==4 else 'layers.png'
@@ -37,7 +45,7 @@ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def page(title,body):return f'<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(title)}</title><style>{CSS}</style><h1>{html.escape(title)}</h1>{body}</html>'
 def write_csv(path,rows):
     with path.open('w',newline='',encoding='utf-8') as f:
-        w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+        w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n');w.writeheader();w.writerows(rows)
 
 def choose(repo,tier,count):
     paths=sorted((repo/'versions/latest/tasks'/v.CLASSES[tier-1]).glob('*/metadata.yaml'))
@@ -71,7 +79,7 @@ def overview(output,tier,rows,filename,frame,subtitle):
     sheet.save(output/filename)
 
 def card(row,tier):
-    name=row['instance_id'];prefix=html.escape(name);thumbnail='center_side.png' if tier==4 else 'target.png'
+    name=row['instance_id'];prefix=html.escape(name);thumbnail='target.png'
     links=[]
     for key,label in [('target.png','目标三维图'),('initial_to_target.png','初始 → 目标'),('layers.png','分层 XY 图'),('inspection.png','四图检查'),('center_check.png','共同中心检查'),('center_side.png','中心侧视图'),('center_inspection.png','三维＋中心边界')]:
         if key in json.loads(row['image_files']):links.append(f'<a href="{prefix}/{key}">{label}</a>')
@@ -109,16 +117,17 @@ def main(default_tiers=(1,2,3,4)):
                 d.text((25,15),f'TIER 4 | {name} | {len(blocks)} bricks | qualifying centre C{qual[-1]}',font=v.font(26),fill='#172b45')
                 d.text((25,55),'Magenta: reference Z-axis. Orange centre ON / OUTSIDE purple ground boundary.',font=v.font(23),fill='#49596b');panel.paste(front,(0,100));panel.paste(side,(v.W,100));panel.save(dest/'center_inspection.png')
                 frames.extend(['center_side.png','layers.png','center_inspection.png'])
-            if is_featured:
+            if is_featured or tier==4:
                 title=f'{name} | {len(blocks)} bricks | {nlevels} layers | min support {support:.0%}'
-                front=v.draw_mesh(blocks,meshes,title,-60 if a.style=='paper' else -55,center_guides=tier==2,boundary_centres=tier==4);front.save(dest/'target.png')
+                front=draw_target(blocks,meshes,title,tier,a.style);front.save(dest/'target.png');frames.append('target.png')
+            if is_featured:
                 back=v.draw_mesh(blocks,meshes,'Target assembly | reverse view',120 if a.style=='paper' else 125,center_guides=tier==2,boundary_centres=tier==4)
                 scene=v.load_yaml(source/'scene_init.yaml');initial=v.draw_mesh(scene['blocks'],meshes,'Initial parts arrangement',-60,reference_xy=scene['parts_plate']['center'][:2],brick_ids={b['name']:i for i,b in enumerate(blocks,1)})
                 v.pair_panel(initial,front,title).save(dest/'initial_to_target.png')
                 if tier!=4:v.draw_layers(blocks,center_guides=tier in (1,2)).save(dest/'layers.png');frames.append('layers.png')
                 with Image.open(dest/'layers.png') as im:layers=im.copy()
                 v.detail_panel(front,back,layers,v.draw_initial(scene,blocks),title).save(dest/'inspection.png')
-                frames.extend(['target.png','initial_to_target.png','inspection.png'])
+                frames.extend(['initial_to_target.png','inspection.png'])
                 if tier==2:
                     side=v.draw_mesh(blocks,meshes,'Same XY centre | 0 / 90 degrees',-90,center_guides=True,elevation=0)
                     v.detail_panel(front,side,v.draw_center_overlay(blocks),layers,title).save(dest/'center_check.png');frames.append('center_check.png')
@@ -131,17 +140,17 @@ def main(default_tiers=(1,2,3,4)):
         group=[r for r in rows if r['tier']==tier];examples=[next(r for r in group if r['instance_id']==q.name) for q in featured[tier]]
         overview(folder,tier,examples,'overview.png','target.png','TOTAL is the brick count. Different views show the same task.')
         if tier==4:overview(folder,tier,examples,'center_overview.png','center_side.png','Orange dots: qualifying upper centres. Purple lines: ground boundary.')
-        body=f'<p><a href="../index.html">返回四个 Tier 总入口</a></p><p class="note">{RULES[tier]} 所有图片从当前 YAML 渲染；不同视图展示同一任务。任务本体在 <code>versions/latest/tasks/{v.CLASSES[tier-1]}/</code>。采用论文风格，保留原始积木位置、朝向、类型、颜色。</p><p><a href="overview.png">{len(examples)} 例目标总览</a>'
+        body=f'<p><a href="../index.html">返回四个 Tier 总入口</a></p><p class="note">{RULES[tier]} 所有图片从当前 YAML 渲染；不同视图展示同一任务。任务本体在 <code>versions/latest/tasks/{v.CLASSES[tier-1]}/</code>。采用论文风格，保留原始积木位置、朝向、类型、颜色。</p><p class="note">{PRIMARY_VIEW_NOTE}</p><p><a href="overview.png">{len(examples)} 例目标总览</a>'
         if tier==4:body+=' · <a href="center_overview.png">中心边界总览</a> · <a href="brick_center_coordinates.csv">全部中心坐标</a>'
         body+=f'</p><p><a href="../tier_definitions.html">四个 Tier 定义与标注读图</a></p>'+LEGEND+f'<p class="note">{GROUND_NOTE}<br>{READING[tier]}</p><h2>先检查这 {len(examples)} 个样例</h2><div class="grid">'+''.join(card(r,tier) for r in examples)+'</div>'
-        if tier==4:body+='<h2>全部 100 个 Tier 4 中心检查</h2><div class="grid">'+''.join(card(r,tier) for r in group)+'</div>'
+        if tier==4:body+='<h2>全部 100 个 Tier 4 目标（三维主视图＋独立中心检查）</h2><div class="grid">'+''.join(card(r,tier) for r in group)+'</div>'
         (folder/'index.html').write_text(page(f'Tier {tier} · 最新版多视图检查',body));write_csv(folder/'manifest.csv',group)
-        (folder/'README.md').write_text(f'# Tier {tier}\n\n{RULES[tier]}\n\n统一图例和定义：../tier_definitions.html。洋红色是结构参考轴 G，紫色是底层包络，C 编号是砖中心，橙点是 Tier 4 合格上层中心。G 不表示重心；初始图使用料盘参考 P。\n\n从 index.html 进入；overview.png 显示 {len(examples)} 个样例。每个任务使用实例 ID 命名的独立目录；文件名表示视角。source/ 是对应 YAML 检查副本。完整任务在 versions/latest/tasks/{v.CLASSES[tier-1]}/。\n')
+        (folder/'README.md').write_text(f'# Tier {tier}\n\n{RULES[tier]}\n\n{PRIMARY_VIEW_NOTE}\n\n统一图例和定义：../tier_definitions.html。洋红色是结构参考轴 G，紫色是底层包络，C 编号是砖中心，橙点是 Tier 4 合格上层中心。G 不表示重心；初始图使用料盘参考 P。\n\n从 index.html 进入；overview.png 显示 {len(examples)} 个样例。每个任务使用实例 ID 命名的独立目录；文件名表示视角。source/ 是对应 YAML 检查副本。完整任务在 versions/latest/tasks/{v.CLASSES[tier-1]}/。\n')
     if center_rows:write_csv(out/'tier_4/brick_center_coordinates.csv',center_rows)
     write_csv(out/'manifest.csv',rows)
     cards=''.join(f'<article><a href="tier_{t}/index.html"><img src="tier_{t}/overview.png" alt="Tier {t}"></a><h2>Tier {t}</h2><p>{RULES[t]}</p><p><a href="tier_{t}/index.html">打开 {a.samples_per_tier} 例多视图检查'+('与全部 100 例中心检查' if t==4 else '')+'</a></p></article>' for t in tiers)
-    (out/'index.html').write_text(page('最新版图片 · 按 Tier 和任务整理',f'<p><a href="tier_definitions.html">先看四个 Tier 定义与标注读图</a></p>'+LEGEND+f'<p class="note">每个 Tier 提供 {a.samples_per_tier} 个精选样例，每例至少 4 张不同视角/阶段的检查图；Tier 4 另保留全部 100 个任务的中心边界检查。Tier 2 以 2–3 块为主（完整数据 85%，4–5 块为 15%）；Tier 3/4 以 3–5 块为主（完整数据 80% / 15% / 5%）。凸点不计作额外积木。</p><div class="grid">{cards}</div><p><a href="manifest.csv">图像与任务对应清单</a> · <a href="README.md">目录说明</a></p>'))
-    (out/'README.md').write_text(f'# 最新版图片\n\n[tier_definitions.html](tier_definitions.html) 解释四个 Tier 与全部颜色标注。洋红色竖轴通过底层整体包络中点 G；俯视图中为十字。G 不表示重心。紫线是底层包络边界，C 点是每块砖的真实 XY 中心，橙点是满足 Tier 4 规则的上层中心。初始散件图用料盘参考 P。\n\n每个 Tier 有独立 tier_1/…tier_4/ 目录，每个精选样例至少四张图。每个任务使用完整实例 ID 命名，里面 target.png / initial_to_target.png / layers.png / inspection.png 分别是目标三维图、初始到目标、分层图和四图检查。Tier 2 有 center_check.png；Tier 4 有 center_side.png 和 center_inspection.png。\n\n当前每 Tier 精选 {a.samples_per_tier} 例；Tier 4 全部 100 例也包含中心检查。source/ 只用于对照图片；任务本体在 ../tasks/。默认按 symposium paper 风格绘制，静态图不认证接触物理。\n\n重新生成到新目录：python scripts/render_gallery.py --output /tmp/benchmark_gallery_new\n')
+    (out/'index.html').write_text(page('最新版图片 · 按 Tier 和任务整理',f'<p><a href="tier_definitions.html">先看四个 Tier 定义与标注读图</a></p>'+LEGEND+f'<p class="note">{PRIMARY_VIEW_NOTE}</p><p class="note">每个 Tier 提供 {a.samples_per_tier} 个精选样例，每例至少 4 张不同视角/阶段的检查图；Tier 4 全部 100 个任务均提供统一三维主视图，并另保留中心边界检查。Tier 2 以 2–3 块为主（完整数据 85%，4–5 块为 15%）；Tier 3/4 以 3–5 块为主（完整数据 80% / 15% / 5%）。凸点不计作额外积木。</p><div class="grid">{cards}</div><p><a href="manifest.csv">图像与任务对应清单</a> · <a href="README.md">目录说明</a></p>'))
+    (out/'README.md').write_text(f'# 最新版图片\n\n[tier_definitions.html](tier_definitions.html) 解释四个 Tier 与全部颜色标注。洋红色竖轴通过底层整体包络中点 G；俯视图中为十字。G 不表示重心。紫线是底层包络边界，C 点是每块砖的真实 XY 中心，橙点是满足 Tier 4 规则的上层中心。初始散件图用料盘参考 P。\n\n每个 Tier 有独立 tier_1/…tier_4/ 目录，每个精选样例至少四张图。每个任务使用完整实例 ID 命名，里面 target.png / initial_to_target.png / layers.png / inspection.png 分别是目标三维图、初始到目标、分层图和四图检查。Tier 2 有 center_check.png；Tier 4 有 center_side.png 和 center_inspection.png。\n\n{PRIMARY_VIEW_NOTE}\n\n当前每 Tier 精选 {a.samples_per_tier} 例；Tier 4 全部 100 例均含 target.png 和独立中心检查。source/ 只用于对照图片；任务本体在 ../tasks/。默认按 symposium paper 风格绘制，静态图不认证接触物理。\n\n重新生成到新目录：python scripts/render_gallery.py --output /tmp/benchmark_gallery_new\n')
     assert before=={str(q.relative_to(tasks)):sha(q) for q in tasks.rglob('*.yaml')}
     definition_page(out,tiers,rows)
     (out/'structure_axis_audit.json').write_text(json.dumps(v.AXIS_AUDIT,indent=2)+'\n')
