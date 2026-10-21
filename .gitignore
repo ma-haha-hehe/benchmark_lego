@@ -4,3 +4,15 @@ __pycache__/
 .pytest_cache/
 .DS_Store
 /robot_korea/
+
+# Local execution, evaluation and diagnostic output.
+/tmp/
+/runs/
+/results/
+/logs/
+/eval_results.csv
+*.log
+/versions/*/validation/
+/versions/*/images/preview_validation.json
+/versions/*/images/structure_axis_audit.json
+/versions/*/images/rendered_mesh_centres.json

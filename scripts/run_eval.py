@@ -1,10 +1,15 @@
+"""Evaluation adapter template; an environment and policy must be connected first.
+
+Episode completion is counted separately from task success. This lightweight
+pose scorer does not replace the robot repository's physical acceptance checks.
+"""
 from __future__ import annotations
 
 import argparse
 import csv
-import json
 import math
 import os
+import sys
 import time
 from dataclasses import dataclass, asdict
 from pathlib import Path
@@ -12,7 +17,7 @@ from typing import Dict, List, Optional, Tuple
 
 import yaml
 
-# 可选：如果你已经有 verifier.py
+# Optional input validation for environments that use the dataset verifier.
 try:
     from verifier import verify_instance_dir
 except Exception:
@@ -261,10 +266,7 @@ def classify_failure_type(
 # =========================================================
 
 class BenchmarkEnvAdapter:
-    """
-    这是你要接你自己 LIBERO / MuJoCo / Panda 环境的地方。
-    下面这些函数我都给你留好了。
-    """
+    """Environment interface for LIBERO, MuJoCo or a robot backend."""
 
     def __init__(self, render: bool = False):
         self.render_enabled = render
@@ -272,36 +274,21 @@ class BenchmarkEnvAdapter:
         self.failed_grasp_attempts = 0
 
     def reset_with_instance(self, spec: InstanceSpec):
-        """
-        TODO:
-        这里读取 spec.scene_init，把初始积木摆到 parts_plate。
-        同时清空 assembly plate。
-        返回初始 observation（如果你需要）。
-        """
+        """Reset both plates using scene_init and return the initial observation."""
         raise NotImplementedError
 
     def render(self):
-        """
-        TODO:
-        如果你有 GUI / offscreen 渲染，可以在这里调用。
-        """
+        """Render the current scene when the backend supports it."""
         return None
 
     def get_current_world_state(self) -> List[Brick]:
-        """
-        TODO:
-        返回当前场景中的积木状态，格式和 Brick 一致。
-        这个很关键，用于统计 completed_blocks。
-        """
+        """Return measured Brick poses for completed-block scoring."""
         raise NotImplementedError
 
     def step_env(self, action) -> Tuple[Optional[dict], bool, dict]:
-        """
-        TODO:
-        执行动作，返回:
-          obs, done, info
-        这里的 done 是“环境 episode 是否结束”，
-        不是最终 benchmark success。
+        """Return (observation, episode_done, info) after applying an action.
+
+        episode_done indicates termination; success is evaluated independently.
         """
         raise NotImplementedError
 
@@ -326,27 +313,16 @@ class MethodRunner:
         self.notes = ""
 
     def setup_instance(self, spec: InstanceSpec, env: BenchmarkEnvAdapter):
-        """
-        TODO:
-        这里做每个 instance 开始前的准备，比如：
-        - Ours: 跑 planner，得到 assembly sequence
-        - pi0: 初始化 policy client / prompt
-        """
+        """Initialize an assembly plan, policy client or task conditioning."""
         return None
 
     def act(self, obs, spec: InstanceSpec, env: BenchmarkEnvAdapter):
-        """
-        TODO:
-        返回一个动作。
-        """
+        """Return the next backend-compatible action."""
         raise NotImplementedError
 
 
 class DryRunMethod(MethodRunner):
-    """
-    用于只测试 benchmark 读写和 logger，
-    不接真实策略。
-    """
+    """No-op method for checking a connected environment and result logging."""
     def __init__(self):
         super().__init__("dry_run")
 
@@ -360,17 +336,11 @@ class OursMethod(MethodRunner):
 
     def setup_instance(self, spec: InstanceSpec, env: BenchmarkEnvAdapter):
         t0 = time.perf_counter()
-        # TODO:
-        # 这里接你的 planner
-        # 例如:
-        # self.plan = run_abd_planner(spec.final_product)
-        # self.plan_cursor = 0
+        # Initialize the planner and execution cursor in a concrete adapter.
         self.planning_time_sec = time.perf_counter() - t0
 
     def act(self, obs, spec: InstanceSpec, env: BenchmarkEnvAdapter):
-        # TODO:
-        # 根据当前 plan / perception / execution state machine 输出 action
-        raise NotImplementedError("Please connect your planner / execution pipeline here.")
+        raise NotImplementedError("The planner/execution method adapter is not configured.")
 
 
 class PiMethod(MethodRunner):
@@ -379,21 +349,14 @@ class PiMethod(MethodRunner):
 
     def setup_instance(self, spec: InstanceSpec, env: BenchmarkEnvAdapter):
         t0 = time.perf_counter()
-        # pi / VLA 一般没有显式 planner
-        # 这里保留 0 或很小值
+        # Record policy initialization separately from episode execution.
         self.planning_time_sec = time.perf_counter() - t0
 
-        # TODO:
-        # 比如:
-        # self.prompt = build_prompt_from_goal(spec.final_product)
-        # self.policy_client = ...
-        # 如果你要接 websocket policy server，这里初始化
+        # Initialize task conditioning and the policy client in a concrete adapter.
         return None
 
     def act(self, obs, spec: InstanceSpec, env: BenchmarkEnvAdapter):
-        # TODO:
-        # 把 observation + prompt 喂给 pi policy
-        raise NotImplementedError("Please connect your pi/VLA policy here.")
+        raise NotImplementedError("The pi/VLA method adapter is not configured.")
 
 
 # =========================================================
@@ -432,7 +395,7 @@ def evaluate_one_instance(
         if info is None:
             info = {}
 
-        # 你可以在 env.step_env 里记录 grasp failure 次数
+        # The backend may report its cumulative grasp failure count.
         if "failed_grasp_attempts" in info:
             env.failed_grasp_attempts = int(info["failed_grasp_attempts"])
 
@@ -506,6 +469,7 @@ CSV_FIELDS = [
 
 
 def append_metrics_to_csv(csv_path: str, metrics: EvalMetrics):
+    Path(csv_path).parent.mkdir(parents=True, exist_ok=True)
     file_exists = os.path.exists(csv_path)
     with open(csv_path, "a", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=CSV_FIELDS)
@@ -519,13 +483,11 @@ def append_metrics_to_csv(csv_path: str, metrics: EvalMetrics):
 # =========================================================
 
 def build_env(render: bool) -> BenchmarkEnvAdapter:
-    """
-    TODO:
-    你在这里替换成你自己的环境类。
-    例如:
-        return LiberoLegoEnvAdapter(render=render)
-    """
-    return BenchmarkEnvAdapter(render=render)
+    """Construct a concrete backend, for example a LIBERO environment adapter."""
+    raise NotImplementedError(
+        "No environment adapter is configured. Implement build_env() with a concrete backend; "
+        "dry_run supplies a no-op method, not an environment."
+    )
 
 
 def build_method(method_name: str) -> MethodRunner:
@@ -554,7 +516,9 @@ def run_eval(
     use_verifier: bool,
     pos_tol: float,
     yaw_tol_deg: int,
-):
+) -> Dict[str, int]:
+    if use_verifier and verify_instance_dir is None:
+        raise RuntimeError("verifier.py is not available, but --use_verifier was set.")
     instance_dirs = collect_instance_dirs(
         benchmark_root=benchmark_root,
         task_class=task_class,
@@ -563,35 +527,36 @@ def run_eval(
 
     print(f"[INFO] Found {len(instance_dirs)} instance(s).")
 
-    passed = 0
-    failed = 0
+    summary = dict(processed=0, successes=0, failures=0, errors=0, skipped=0)
 
     for instance_dir in instance_dirs:
-        if use_verifier:
-            if verify_instance_dir is None:
-                raise RuntimeError("verifier.py is not available, but --use_verifier was set.")
-            ok, errors = verify_instance_dir(instance_dir, use_planner=False)
-            if not ok:
-                print(f"[SKIP] verification failed: {instance_dir}")
-                for e in errors:
-                    print(f"  - {e}")
-                failed += 1
-                continue
-
-        spec = load_instance(instance_dir)
-
-        env = build_env(render=render)
-        method = build_method(method_name)
-
+        summary["processed"] += 1
+        label = Path(instance_dir).name
         try:
-            metrics = evaluate_one_instance(
-                spec=spec,
-                env=env,
-                method=method,
-                max_steps=max_steps,
-                pos_tol=pos_tol,
-                yaw_tol_deg=yaw_tol_deg,
-            )
+            if use_verifier:
+                ok, errors = verify_instance_dir(instance_dir, use_planner=False)
+                if not ok:
+                    print(f"[SKIP] verification failed: {instance_dir}")
+                    for error in errors:
+                        print(f"  - {error}")
+                    summary["skipped"] += 1
+                    continue
+
+            spec = load_instance(instance_dir)
+            label = spec.instance_id
+            env = build_env(render=render)
+            try:
+                method = build_method(method_name)
+                metrics = evaluate_one_instance(
+                    spec=spec,
+                    env=env,
+                    method=method,
+                    max_steps=max_steps,
+                    pos_tol=pos_tol,
+                    yaw_tol_deg=yaw_tol_deg,
+                )
+            finally:
+                env.close()
             append_metrics_to_csv(output_csv, metrics)
 
             status = "PASS" if metrics.success == 1 else "FAIL"
@@ -602,27 +567,26 @@ def run_eval(
                 f"plan={metrics.planning_time_sec:.2f}s | "
                 f"grasps_failed={metrics.failed_grasp_attempts}"
             )
-            passed += 1
+            summary["successes" if metrics.success == 1 else "failures"] += 1
 
-        except Exception as e:
-            failed += 1
-            print(f"[ERROR] {spec.instance_id}: {e}")
+        except Exception as error:
+            summary["errors"] += 1
+            print(f"[ERROR] {label}: {error}")
 
-        finally:
-            env.close()
-
-    print(f"\n[SUMMARY] processed={passed + failed}, ok={passed}, failed_or_skipped={failed}")
-    print(f"[SUMMARY] csv saved to: {output_csv}")
+    print("\n[SUMMARY] " + ", ".join(f"{key}={value}" for key, value in summary.items()))
+    if summary["successes"] + summary["failures"]:
+        print(f"[SUMMARY] episode metrics appended to: {output_csv}")
+    return summary
 
 
 # =========================================================
 # CLI
 # =========================================================
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Run evaluation on LEGO Duplo benchmark instances")
+def parse_args(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--benchmark_root", type=str, required=True, help="Path to benchmark root")
-    parser.add_argument("--output_csv", type=str, default="eval_results.csv", help="CSV output path")
+    parser.add_argument("--output_csv", type=str, default="runs/eval_results.csv", help="Local CSV output path")
     parser.add_argument("--method", type=str, required=True, choices=["ours", "pi0", "dry_run"])
     parser.add_argument("--task_class", type=str, default=None, help="Optional task class filter")
     parser.add_argument("--max_instances", type=int, default=None, help="Optional max number of instances")
@@ -631,24 +595,29 @@ def parse_args():
     parser.add_argument("--use_verifier", action="store_true", help="Run verifier before evaluation")
     parser.add_argument("--pos_tol", type=float, default=0.015, help="Position tolerance for success check")
     parser.add_argument("--yaw_tol_deg", type=int, default=10, help="Yaw tolerance in degrees")
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
-def main():
-    args = parse_args()
-    run_eval(
-        benchmark_root=args.benchmark_root,
-        output_csv=args.output_csv,
-        method_name=args.method,
-        task_class=args.task_class,
-        max_instances=args.max_instances,
-        max_steps=args.max_steps,
-        render=args.render,
-        use_verifier=args.use_verifier,
-        pos_tol=args.pos_tol,
-        yaw_tol_deg=args.yaw_tol_deg,
-    )
+def main(argv=None):
+    args = parse_args(argv)
+    try:
+        summary = run_eval(
+            benchmark_root=args.benchmark_root,
+            output_csv=args.output_csv,
+            method_name=args.method,
+            task_class=args.task_class,
+            max_instances=args.max_instances,
+            max_steps=args.max_steps,
+            render=args.render,
+            use_verifier=args.use_verifier,
+            pos_tol=args.pos_tol,
+            yaw_tol_deg=args.yaw_tol_deg,
+        )
+    except (OSError, ValueError, RuntimeError) as error:
+        print(f"[ERROR] {error}", file=sys.stderr)
+        return 2
+    return 0 if summary["processed"] > 0 and summary["successes"] == summary["processed"] else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

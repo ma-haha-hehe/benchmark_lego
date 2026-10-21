@@ -21,8 +21,4 @@
 - 分层图采用 32×32 / 64×32 mm 名义轮廓。灰虚线为上一层支撑，紫点线为地面外包络；凸点仅用于示意。
 - 支撑率为相邻层轮廓交叠比例。这些图不证明物理稳定性、正确插接或机器人可执行性。
 
-重建（不修改源任务）：
-```sh
-python scripts/visualize_task.py --repo /path/to/benchmark_lego --output /path/to/previews
-```
-需要安装 `requirements-visualization.txt` 中的可选依赖。
+本目录保留历史图片快照。当前渲染入口 `scripts/render_gallery.py` 读取的是最新版任务，会生成带参考轴与中心标注的新图库；它不用于重新创建本目录的历史快照。

@@ -35,15 +35,16 @@
   views, paired initial/target layouts and all 100 Tier 4 centre checks.
 - Annotate the common ground-envelope reference axis, boundaries and actual
   brick centres. The geometric reference is not a centre of mass.
-- Include task verification, source hashes, image/source correspondence and
-  transformed-mesh centre audits.
+- Include source hashes and image/source correspondence in gallery manifests.
+  Keep per-run verification, rendering audits and execution logs local.
 
 ### Verification scope
 
-The regression suite contains 35 tests, including 240 Tier 2 yaw/type/edge
-subcases. The 400 current tasks pass static verification and reproduce from
-their recorded seeds and block counts. Image and geometry checks do not certify
-contact physics, robot reachability, balance or successful physical execution.
+The regression suite covers generation, reproducibility, schema rejection,
+Tier 2 yaw/type/edge combinations and Tier 4 centre-boundary conditions. The
+verifier checks current tasks against the static generation contract. Image and
+geometry checks do not certify contact physics, robot reachability, balance or
+successful physical execution.
 
 This dataset revision changes the task distribution and requires new evaluation.
 It does not revise or reproduce the original paper's reported performance.

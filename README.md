@@ -1,4 +1,8 @@
-# WorkBenchMark：任务、图片与脚本
+# WorkBenchMark：模块化积木装配任务集
+
+WorkBenchMark 面向机器人积木装配研究，提供从初始散件到目标结构的配对任务。当前版本包含四个难度层级、共 400 个任务，使用 2×2 和 4×2 两种积木。任务以 YAML 描述，配套确定性生成器、独立静态校验器、几何检查图和评估接入接口，可用于研究抓取、装配、结构条件策略及不同方法的任务完成情况。
+
+This repository provides 400 structured brick-assembly tasks across four tiers, with paired initial and goal states, reproducible generation, static verification, and annotated visual previews. The canonical dataset is `versions/latest/tasks/`. Robot execution and simulator integration are maintained in the companion [robot_korea repository](https://github.com/ma-haha-hehe/robot_korea).
 
 [四个 Tier 的定义与标注读图](versions/latest/images/tier_definitions.html) · [中文定义文档](docs/tier_definitions.md)
 
@@ -22,12 +26,11 @@ Workbenchmark/
 ├── versions/
 │   ├── latest/                 当前实际使用的版本
 │   │   ├── tasks/              400 个完整任务，Tier 1–4 各 100 个
-│   │   ├── images/
-│   │   │   ├── tier_1/         12 个精选样例，多视图
-│   │   │   ├── tier_2/         12 个精选样例，共同中心检查
-│   │   │   ├── tier_3/         12 个精选样例，桥接与分层检查
-│   │   │   └── tier_4/         12 个精选样例＋全部 100 个中心边界检查
-│   │   └── validation/         任务、图像和中心坐标的核对记录
+│   │   └── images/
+│   │       ├── tier_1/         12 个精选样例，多视图
+│   │       ├── tier_2/         12 个精选样例，共同中心检查
+│   │       ├── tier_3/         12 个精选样例，桥接与分层检查
+│   │       └── tier_4/         12 个精选样例＋全部 100 个中心边界检查
 │   └── initial/                初次生成版本，完整任务与最初图片
 ├── tasks/                      远端原始的 400 个任务，只作历史存档
 ├── scripts/                    生成、校验、渲染、评估脚本
@@ -36,6 +39,8 @@ Workbenchmark/
 ├── docs/                       详细几何、格式和生成约定
 └── 版本导航.md                  中文路径说明
 ```
+
+各版本的 `images/manifest.csv` 保存实例编号、种子、任务路径、源文件校验和与图片文件名，是数据集的对应关系索引。每次运行产生的日志、评估结果和调试输出保存在本地，不属于发布数据。
 
 ## 每个 Tier 的对应任务与图片
 
@@ -66,13 +71,20 @@ TOTAL 表示实体积木数量，凸点不额外计数。不同视图展示同�
 
 ## 使用
 
-在仓库根目录安装相应依赖：
+需要 Python 3.10 或更新版本。在仓库根目录创建环境并校验当前任务：
 
 ```sh
+python3 -m venv .venv
+source .venv/bin/activate
 python3 -m pip install -r requirements.txt
-python3 -m pip install -r requirements-visualization.txt
 python3 scripts/verifier.py --benchmark_root versions/latest/tasks
 python3 -m unittest discover -s tests -v
+```
+
+已有图片可以直接查看。重新渲染时，再安装 `requirements-visualization.txt`：
+
+```sh
+python3 -m pip install -r requirements-visualization.txt
 ```
 
 生成新数据或图片时使用新的输出目录，检查后再替换当前版本：
@@ -83,6 +95,29 @@ python3 scripts/render_gallery.py --output /tmp/benchmark_gallery_new
 ```
 
 生成器默认位置和渲染器输入都是 `versions/latest/tasks/`。每个任务有三个 YAML：`final_product.yaml`（目标）、`scene_init.yaml`（初始场景）、`metadata.yaml`（任务信息与规则）。位置单位为米，旋转单位为弧度，XY 原点在砖体中心，Z 是砖体底面。
+
+## 任务格式与复现
+
+一个任务实例对应一个独立目录，例如：
+
+```text
+versions/latest/tasks/simple_multi_brick_stack/simple_multi_brick_stack_001/
+├── final_product.yaml     目标中每块积木的名称、类型、颜色和位姿
+├── scene_init.yaml        相同积木的初始位姿、料盘与装配区域、几何参数
+└── metadata.yaml          任务类别、种子、块数、规则版本和静态装配顺序
+```
+
+`name` 是场景与目标之间的对应标识；`type` 为 `brick_2x2` 或 `brick_4x2`；`pos` 为 `[x, y, z]`；`rotation` 为 `[roll, pitch, yaw]`。名义凸点间距为 16 mm，名义底面为 32×32 mm 或 64×32 mm，任务层间距为 20 mm。仿真端应显式处理实际网格、插接深度和接触几何，避免把凸点总高度直接当作层间距。
+
+`metadata.yaml` 中的 `seed`、`num_blocks` 与任务类别共同确定生成输入。`verified: true` 对应 `validation_scope: static_grid_and_side_strip_proxy`，表示通过静态规则检查；`planner_checked: false` 表示未进行机器人规划认证。完整字段与复现方式见 [生成约定](docs/generation_contract.md)。
+
+## 接入机器人或策略
+
+机器人执行入口在配套的 [robot_korea](https://github.com/ma-haha-hehe/robot_korea) 中，包含任务导入、MuJoCo 执行、阶段状态机和抽样评估工具。将本仓库的 `versions/latest/tasks/` 作为任务输入；两个仓库分别维护，不需要把本地运行输出复制回任务目录。
+
+本仓库的 `scripts/run_eval.py` 提供环境与策略适配接口、完成进度和 CSV 字段约定。接入新方法时，需要实现 `BenchmarkEnvAdapter` 的场景初始化、动作执行和状态读取，以及 `MethodRunner.act`。其中 `ours`、`pi0` 是预留适配器名称，`dry_run` 仅为接口占位；它们不是可直接复现实验成绩的已训练基线。详见 [脚本说明](scripts/README.md)。
+
+比较不同方法时，应固定任务版本和实例列表，并明确观测来源、动作空间、终止条件、超时预算及成功容差。图片和静态校验可检查输入定义；机器人成功率应由实际运行与独立终态检查得出。
 
 ## 历史数据与验证范围
 
